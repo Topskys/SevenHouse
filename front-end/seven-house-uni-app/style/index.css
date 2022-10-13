@@ -1,0 +1,68 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: content-box;
+}
+
+
+:root {
+	--primary-color: #335eea;
+}
+
+
+.r-flex-1 {
+	display: flex;
+}
+
+.r-flex-2 {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.r-flex-3 {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.r-flex-4 {
+	display: flex;
+	justify-content: space-between;
+}
+
+.r-flex-5 {
+	display: flex;
+	align-items: center;
+}
+
+.r-flex-6 {
+	display: flex;
+	justify-content: flex-end;
+	/* align-items: center; */
+}
+
+.c-flex-1 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.c-flex-2 {
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+}
+
+.c-flex-3 {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+
+.c-flex-4 {
+	/* display: flex; */
+	/* flex-direction: column; */
+	/* justify-content: space-around; */
+}

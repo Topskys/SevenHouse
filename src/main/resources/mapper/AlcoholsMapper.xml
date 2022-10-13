@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.house.xxl.dao.AlcoholsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.house.xxl.model.Alcohols">
+        <id column="alco_id" property="alcoId" />
+        <result column="alco_number" property="alcoNumber" />
+        <result column="alco_name" property="alcoName" />
+        <result column="alco_img" property="alcoImg" />
+        <result column="alco_origin" property="alcoOrigin" />
+        <result column="alco_supplier" property="alcoSupplier" />
+        <result column="alco_type" property="alcoType" />
+        <result column="alco_dec" property="alcoDec" />
+        <result column="alco_profit" property="alcoProfit" />
+        <result column="alco_cap" property="alcoCap" />
+        <result column="alco_originprice" property="alcoOriginprice" />
+        <result column="alco_status" property="alcoStatus" />
+        <result column="alco_remarks" property="alcoRemarks" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        alco_id, alco_number, alco_name, alco_img, alco_origin, alco_supplier, alco_type, alco_dec, alco_profit, alco_cap, alco_originprice, alco_status, alco_remarks, create_time, update_time
+    </sql>
+
+</mapper>

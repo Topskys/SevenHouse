@@ -1,0 +1,25 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/bar?characterEncoding=utf-8
+    username: root
+    password: root
+    initial-size: 1
+    min-idle: 1
+    max-active: 20
+
+server:
+  port: 8989
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.house.xxl.model
+
+
+
+
+
+
