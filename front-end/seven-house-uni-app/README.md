@@ -9,6 +9,10 @@
 
 
 ## 项目进度
+
+
+
+
 2022年10月13日21:21:50
 > 基本完成底部四个选项卡的静态页面：首页、分类、订单、个人中心、登录、注册
 <div>如果图片不显示可前往：<a href="https://github.com/Topskys/xxl.git">github.com</a></div>
@@ -23,10 +27,10 @@
 	<img src="https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/register.png"/> 
 </div> -->
 
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/index.png)
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/category.png)
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/order1.png)
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/order2.png)
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/mine.png)
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/login.png)
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/register.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/index.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/category.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/order1.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/order2.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/mine.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/login.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/register.png)

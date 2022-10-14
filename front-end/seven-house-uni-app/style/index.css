@@ -66,3 +66,13 @@
 	/* flex-direction: column; */
 	/* justify-content: space-around; */
 }
+
+
+/* 外边距 */
+.mt5 {
+	margin-top: 10rpx;
+}
+
+.mt10 {
+	margin-top: 20rpx;
+}

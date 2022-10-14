@@ -10,7 +10,7 @@
 		</view>
 		<view style="margin: 0 40rpx 40rpx 40rpx;background-color:#fff;border-radius: 10px;padding-bottom:20px;">
 			<view class="r-flex-2">
-				<view class="order__item c-flex-1">
+				<view class="order__item c-flex-1" @click="scanCode">
 					<view class="order__up">
 						<img src="static/images/bottle.png" />
 					</view>
@@ -19,7 +19,7 @@
 						<p class="order__slogan">一起吨吨吨</p>
 					</view>
 				</view>
-				<view class="order__item  c-flex-1">
+				<view class="order__item  c-flex-1" @click="swiPage('/pages/classify/classify')">
 					<view class="order__up">
 						<img src="static/images/takeout.png" />
 					</view>
@@ -30,7 +30,7 @@
 				</view>
 			</view>
 			<view class="r-flex-2">
-				<view class="extra__item c-flex-1">
+				<view class="extra__item c-flex-1" @click="rediPage('/pages/discount/discount')">
 					<view class="extra__up">
 						<img src="static/images/discount.png" />
 					</view>
@@ -39,7 +39,7 @@
 						<p class="extra__slogan">省钱小苗招</p>
 					</view>
 				</view>
-				<view class="extra__item  c-flex-1">
+				<view class="extra__item  c-flex-1" @click="rediPage('/pages/club/club')">
 					<view class="extra__up">
 						<img src="static/images/club.png" />
 					</view>
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+	import uniCard from '@/common/uni-card_1.3.1/components/uni-card/uni-card.vue'
 	export default {
 		data() {
 			return {
@@ -90,11 +91,30 @@
 				]
 			}
 		},
+		components: {
+			uniCard,
+		},
 		onLoad() {
 
 		},
 		methods: {
-
+			// 手机端才有的扫码接口
+			scanCode: () => {
+				// 允许从相机和相册扫码
+				uni.scanCode({
+					success: function(res) {
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+					}
+				})
+			},
+			// 页面跳转，uni.redirectTo()：只能打开非tabBar页面的路径
+			rediPage: (path = '') => path && uni.redirectTo({
+				url: path
+			}),
+			swiPage: (path = '') => path && uni.switchTab({
+				url: path
+			})
 		}
 	}
 </script>
