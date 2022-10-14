@@ -57,7 +57,6 @@
 
 <script>
 	export default {
-
 		data() {
 			return {
 				value: '请填写',

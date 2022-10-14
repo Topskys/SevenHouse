@@ -5,6 +5,20 @@
 }
 
 
+/* uni-app,
+uni-page {
+
+	max-width: 540px;
+
+}
+
+.uni-page-head,
+uni-page-wrapper,
+.uni-tabbar {
+	max-width: 540px;
+} */
+
+
 :root {
 	--primary-color: #335eea;
 }
