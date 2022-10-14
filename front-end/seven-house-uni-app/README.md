@@ -18,6 +18,27 @@
 
 <div>如果图片不显示可前往：<a href="https://github.com/Topskys/xxl.git">github.com</a></div>
 
+
+<!-- github -->
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/index.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/category.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/order1.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/order2.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/mine.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/login.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/register.png)
+
+
+<!-- gitee -->
+<!-- ![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/index.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/category.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/order1.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/order2.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/mine.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/login.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/register.png) -->
+
+
 <!-- <div>
 	<img src="https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/index.png"/> 
 	<img src="https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/category.png"/> 
@@ -27,11 +48,3 @@
 	<img src="https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/login.png"/> 
 	<img src="https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/register.png"/> 
 </div> -->
-
-![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/index.png)
-![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/category.png)
-![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/order1.png)
-![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/order2.png)
-![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/mine.png)
-![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/login.png)
-![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/register.png)
