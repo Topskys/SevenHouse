@@ -11,6 +11,9 @@
 ## 项目进度
 
 
+2022年10月14日23:12:40
+> 1.修改首页，删除首页优惠劵、官方部落入口，新增选座功能，新增个人信息、官方部落静态页面，封装了购物导航栏组件
+> 2.封装request.js请求工具，以及请求函数（@/api/*），编写了首页的数据集请求函数
 
 
 2022年10月13日21:21:50
@@ -27,6 +30,7 @@
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/mine.png)
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/login.png)
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/register.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/selfInfo.png) 
 
 
 <!-- gitee -->
@@ -36,7 +40,8 @@
 ![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/order2.png)
 ![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/mine.png)
 ![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/login.png)
-![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/register.png) -->
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/register.png)
+![Image text](https://gitee.com/zzh21/xxl/blob/master/front-end/seven-house-uni-app/static/selfInfo.png) -->
 
 
 <!-- <div>

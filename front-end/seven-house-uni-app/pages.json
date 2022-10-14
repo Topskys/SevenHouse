@@ -55,18 +55,23 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/selfInfo/selfInfo",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/discount/discount",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	    ,{
-            "path" : "pages/selfInfo/selfInfo",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/discount/discount",
+            "path" : "pages/save-wine/save-wine",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
@@ -80,6 +85,7 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+		// "maxWidth": 540 // uni-app的最大宽度，建议注释掉，该方案存在缺陷
 	},
 	//底部tapBar
 	"tabBar": {

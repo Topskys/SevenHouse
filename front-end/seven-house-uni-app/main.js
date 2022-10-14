@@ -1,7 +1,16 @@
 import App from './App'
 
-
+// 引入全局样式
 import '@/style/index.css'
+// 引入求情函数
+import api from '@/api/index.js'
+
+
+
+
+
+// 挂载，扩展vue原型
+Vue.prototype.$api = api
 
 
 // 检查是否登录
