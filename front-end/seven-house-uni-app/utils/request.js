@@ -1,23 +1,27 @@
-const BASE_URL = 'http://localhost:8888'
+const baseUrl = "http://localhost:8080"
 
-export const http = (options) => {
+const request = (options) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: BASE_URL + options.url,
-			method: options.method || 'GET',
-			data: options.data || {},
-			success: (res) => {
-				if (res.data.status !== 200) return uni.showToast({
-					title: '获取数据失败'
-				})
-				resolve(res.data)
+			method: options.methods || "GET",
+			url: baseUrl + options.url,
+			data: JSON.stringify(options.data || {}),
+			header: options.header || {
+				'content-type': 'application/json;charset=utf-8'
 			},
-			fail: (err) => {
-				uni.showToast({
-					title: '获取数据失败'
-				})
-				reject(err)
-			}
+			dataType: 'json',
+		}).then((response) => {
+			setTimeout(function() {
+				uni.hideLoading();
+			}, 200);
+			let [error, res] = response;
+			resolve(res.data);
+		}).catch(error => {
+			let [err, res] = error;
+			reject(err)
 		})
-	})
+	});
 }
+
+
+export default request

@@ -1,69 +1,48 @@
 <template>
-	<scroll-view scroll-y="true"
-		style="height: calc(100vh - 44px - 62.78px ); background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);">
-		<uni-card :isShadow="false" style='border-radius: 20rpx;margin-top:31%;'>
-			<view class="customer__info  r-flex-3">
-				<view class="info__left r-flex-1">
-					<view class="customer__avatar" style="width: 50px;height:50px;margin-right: 20rpx;">
-						<img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-							style="border-radius:50%; width: 100%;height: 100%;">
+	<scroll-view scroll-y="true" class="scroll">
+		<uni-card :isShadow="false" class="customer__info" style="margin-top: 100px;">
+			<view class="  r-flex-3">
+				<view class="info__left r-flex-3">
+					<view class="customer__avatar">
+						<img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
 					</view>
 					<view>
-						<b style='color:#000; font-size:36rpx' @click='rediPage'>登录</b>
-						<p style='opacity: .8; font-size:28rpx'>ID:0000001</p>
+						<b @click='navPage("/pages/login/login")'>登录</b>
+						<p>ID:0000001</p>
 					</view>
 				</view>
-				<view class="info__right" style="color: darkgoldenrod;font-size: 36rpx;">LV1</view>
+				<view class="info__right">LV1</view>
 			</view>
-			<view class="customer__last__eine" style="margin-top: 20rpx;">
-				<p>存酒余量</p>
+			<view style="margin-top: 10px;">
+				<p>会员</p>
 				<progress :percent="last" show-info active />
 			</view>
 		</uni-card>
 		<uni-card :isShadow="false" style='border-radius: 20rpx;'>
-			<view class="score__discount r-flex-4">
-				<view class="customer__score" style="width: 50%;">
-					<h4 style='color:#000;'>我的积分</h4>
-					<b style='color: #000;font-size:32rpx;line-height:80rpx;'>0</b>
-					<p style='opacity:.8 ;font-size: 24rpx;'>快来用积分兑换您喜欢的宝贝吧~</p>
+			<view class="score__discount">
+				<view class="customer__score">
+					<h4>我的积分</h4>
+					<b>0</b>
+					<p>快来用积分兑换您喜欢的宝贝吧~</p>
 				</view>
-				<view class="customer__score" style="width: 50%;">
-					<h4 style='color:#000;'>优惠劵</h4>
-					<b style='color: #000;font-size:32rpx;line-height:80rpx;'>0</b>
-					<p style='opacity:.8 ;font-size: 24rpx;'>快来使用优惠劵吧~</p>
+				<view class="customer__discount">
+					<h4>优惠劵</h4>
+					<b>0</b>
+					<p>快来使用优惠劵吧~</p>
 				</view>
 			</view>
 		</uni-card>
-		<uni-card :isShadow="false" style='border-radius: 20rpx;'>
-			<h4 style='color:#000;'>我的服务</h4>
-			<view class="server__list"
-				style="margin: 20rpx 0;display: grid;grid-template-columns: repeat(4,1fr);gap: 40rpx;">
+		<!-- 我的服务 -->
+		<uni-card :isShadow="false" class="myServer">
+			<h4>我的服务</h4>
+			<view class="server__list">
 				<view class="server__item c-flex-2" v-for="item,index in server" :key="item.title"
-					@click="rediPage(item)">
-					<img :src="item.icon" style='width: 60rpx;height: 60rpx;' />
-					<span style='font-size: 28rpx;margin-top: 10rpx;'>{{item.title}}</span>
+					@click="navPage(item.path)">
+					<img :src="item.icon" />
+					<span>{{item.title}}</span>
 				</view>
 			</view>
 		</uni-card>
-
-
-		<view class="goods__nav r-flex-3" style="margin: 0 40rpx;">
-			<view class="left">
-				<uni-badge class="uni-badge-left-margin" :text="value" absolute="rightTop" size="small">
-					<view class="fa-shopping-bag" @click="spreadOrder('bottom')">
-						<img src="static/images/shopping-bag.png" style="width:60rpx;height: 60rpx;">
-					</view>
-				</uni-badge>
-			</view>
-			<view class="right">
-				<button type='default' size='mini'
-					style="color:#fff;background-color: #42b983 ;margin-right: 20rpx;">加入购物车</button>
-				<button type='primary' size='mini'>立即购买</button>
-			</view>
-			<uni-popup ref="popup" background-color="#fff" @change="change" style="height: 200px;">
-				底部弹出 Popup5332464
-			</uni-popup>
-		</view>
 	</scroll-view>
 </template>
 
@@ -72,13 +51,9 @@
 		mapState
 	} from 'vuex'
 	import uniCard from '@/common/uni-card_1.3.1/components/uni-card/uni-card.vue'
-	import uniBadge from '@/components/uni-badge_1.2.1/components/uni-badge/uni-badge.vue'
-	import uniPopup from '@/components/uni-popup_1.7.9/components/uni-popup/uni-popup.vue'
 	export default {
 		data() {
 			return {
-				type: 'bottom',
-				value: 7,
 				last: 45, // 存酒余量
 				server: [{
 						icon: "static/images/club.png",
@@ -88,7 +63,7 @@
 					{
 						icon: "static/images/database.png",
 						title: '我的存酒',
-						path: "/pages/club/club",
+						path: "/pages/save-wine/save-wine",
 					},
 					{
 						icon: "static/images/info.png",
@@ -96,22 +71,20 @@
 						path: "/pages/selfInfo/selfInfo",
 					},
 					{
-						icon: "static/images/market.png",
-						title: '官方商城',
-						path: "/pages/club/club",
+						icon: "static/images/discount.png",
+						title: '优惠劵',
+						path: "/pages/discount/discount",
 					},
 					{
 						icon: "static/images/more.png",
 						title: '更多服务',
-						path: "/pages/club/club",
+						path: "",
 					}
-				]
+				],
 			}
 		},
 		components: {
 			uniCard,
-			uniBadge,
-			uniPopup,
 		},
 		computed: {
 			...mapState({
@@ -120,27 +93,101 @@
 		},
 		methods: {
 			// 页面跳转，uni.redirectTo()：只能打开非tabBar页面的路径
-			rediPage: ({
-				path = ''
-			}) => uni.redirectTo({
-				url: path ? path : `/pages/login/login`
+			navPage: (path = '') => uni.navigateTo({
+				url: path ? path : uni.showToast({
+					title: '开发中',
+					icon: 'none'
+				})
 			}),
-			spreadOrder(type) {
-				this.type = type
-				// open 方法传入参数 等同在 uni-popup 组件上绑定 type属性
-				this.$refs.popup.open(type)
-
-			},
-			close() {
-				this.$refs.popup.close()
-			},
-			change(e) {
-				console.log('当前模式：' + e.type + ',状态：' + e.show);
-			},
 		}
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
+	.scroll {
+		min-height: calc(100vh - 44px - 62.78px);
+		background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+		overflow: hidden;
 
+		.customer__info {
+			border-radius: 20rpx;
+
+			.info__left {
+				.customer__avatar {
+					width: 50px;
+					height: 50px;
+					margin-right: 10px;
+
+					img {
+						border-radius: 50%;
+						width: 100%;
+						height: 100%;
+					}
+				}
+
+				b {
+					color: #000;
+					font-size: 18px;
+				}
+
+				p {
+					opacity: .8;
+					font-size: 14px;
+				}
+			}
+
+			.info__right {
+				color: darkgoldenrod;
+				font-size: 18px;
+			}
+		}
+
+		.score__discount {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+
+			h4 {
+				color: #000;
+			}
+
+			b {
+				color: #000;
+				font-size: 16px;
+				line-height: 30px;
+			}
+
+			p {
+				opacity: .8;
+				font-size: 12px;
+			}
+		}
+
+		.myServer {
+			border-radius: 20rpx;
+
+			h4 {
+				color: #000;
+			}
+
+			.server__list {
+				margin: 20rpx 0;
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 40rpx;
+
+				.server__item {
+					img {
+						width: 30px;
+						height: 30px;
+					}
+
+					span {
+						font-size: 14px;
+						margin-top: 10rpx;
+					}
+				}
+			}
+		}
+	}
 </style>

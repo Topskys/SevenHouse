@@ -1,33 +1,60 @@
 <template>
-	<view class="login__container" style="min-height: 100vh;background: #fff ;padding:0 30rpx">
-		<uni-forms :modelValue="form" ref="form" :rules="rules" validate-trigger="bind">
-			<uni-forms-item name="email" class="uni-form-item">
-				<view class="title">邮箱</view>
-				<input class="uni-input" v-model="form.email" placeholder="请输入邮箱" />
-			</uni-forms-item>
-			<uni-forms-item name="password" class="uni-form-item">
-				<view style="padding-bottom: 20rpx;">密码</view>
-				<input class="uni-input" password type="text" v-model="form.password" placeholder="请输入密码" />
-			</uni-forms-item>
-		</uni-forms>
-		<button @click="submit" style="margin-top: 100rpx;background-color: #42b983;letter-spacing: 4rpx;">登录</button>
-		<button @click="navRegister" style="margin-top: 40rpx;letter-spacing: 4rpx;">注册</button>
-		<view class="register__negotitate" style="color: #999;font-size: 28rpx;margin-top: 40rpx;text-align: center;">
-			登录注册即代表阅读并同意<a href="https://uniapp.dcloud.net.cn/" style="color: #335eea;text-decoration: none;">服务协议</a>
+	<view class="login__container">
+		<!-- <view class="grid mb20" style="margin-top: 20%;">
+			<view class=' pg10-0 ta-c' :class='tab===0?"active":""' @click='tab=0'>登 录</view>
+			<view class=' pg10-0 ta-c' :class='tab===0?"":"active"' @click='tab=1'>注 册</view>
+		</view> -->
+		<liuyuno-tabs :tabData="tabs" :defaultIndex="tab" @tabClick='tabClick' :config='config'
+			style="margin:20% 0 15% 0;" />
+		<!-- 登录 -->
+		<view v-show="tab===0">
+			<uni-forms :modelValue="form" ref="form" :rules="rules" validate-trigger="bind">
+				<uni-forms-item name="email" class="uni-form-item">
+					<view class="title">邮箱</view>
+					<input class="uni-input" v-model="form.email" placeholder="请输入邮箱" />
+				</uni-forms-item>
+				<uni-forms-item name="password" class="uni-form-item">
+					<view style="padding-bottom: 20rpx;">密码</view>
+					<input class="uni-input" password type="text" v-model="form.password" placeholder="请输入密码" />
+				</uni-forms-item>
+			</uni-forms>
+			<button @click="submit" style="margin-top: 100rpx;background-color: #42b983;letter-spacing: 4rpx;">登
+				录</button>
+			<view class="register__negotitate"
+				style="color: #999;font-size: 28rpx;margin-top: 40rpx;text-align: center;">
+				登录注册即代表阅读并同意<a href="https://uniapp.dcloud.net.cn/"
+					style="color: #335eea;text-decoration: none;">服务协议</a>
+			</view>
 		</view>
+		<!-- 注册 -->
+		<register v-show="tab===1"></register>
+		<!-- <button @click="navRegister" style="margin-top: 40rpx;letter-spacing: 4rpx;">注 册</button> -->
+
 	</view>
 </template>
 
 <script>
 	import uniForms from '@/components/uni-forms_1.4.8/components/uni-forms/uni-forms.vue'
 	import uniFormsItem from '@/components/uni-forms_1.4.8/components/uni-forms-item/uni-forms-item.vue'
+	import register from '@/components/register/register.vue'
+	import liuyunoTabs from '@/common/liuyuno-tabs_2.0.2/components/liuyuno-tabs/liuyuno-tabs.vue'
 	export default {
 		components: {
 			uniForms,
 			uniFormsItem,
+			register,
+			liuyunoTabs,
 		},
 		data() {
 			return {
+				tab: 0, // 登录注册选项卡
+				tabs: ['登录', '注册'],
+				config: {
+					activeColor: '#335eea',
+					underLineColor: '#335eea',
+					fontSize: 38,
+					underLineHeight: 5,
+				},
 				form: {
 					email: '',
 					password: "",
@@ -64,29 +91,63 @@
 			this.$refs.form.setRules(this.rules)
 		},
 		methods: {
+			// tabs的回调
+			tabClick(val) {
+				this.tab = val
+			},
 			// 提交登录表单
 			submit(form) {
 				this.$refs.form.validate().then(res => {
-					console.log('表单数据信息：', res);
-					uni.showModal({
-						content: '表单数据内容：' + JSON.stringify(res),
-						showCancel: false
-					});
+					// console.log('表单数据信息：', res);
+					// uni.showModal({
+					// 	content: '表单数据内容：' + JSON.stringify(res),
+					// 	showCancel: false
+					// });
+					this.$api.user.reqLogin(JSON.stringify(res)).then(({
+						code,
+						data
+					}) => {
+						if (code === 200) {
+							// 保存用户信息，跳转页面
+							this.$store.commit("updateUserInfo", data.userInfo)
+							// 判断当前路径是否携带跳转参数且返回上一级，否则跳转首页
+						} else {
+							uni.showToast({
+								title: data.msg,
+								icon: 'none'
+							});
+						}
+					})
 				}).catch(err => {
 					console.log('表单错误信息：', err);
 				})
 			},
 			// 前往注册
-			navRegister() {
-				uni.navigateTo({
-					url: '../register/register'
-				})
-			}
+			// navRegister() {
+			// 	uni.navigateTo({
+			// 		url: '../register/register'
+			// 	})
+			// }
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.login__container {
+		min-height: calc(100vh - 44px);
+		background: #fff;
+		padding: 0 30rpx;
+		overflow: hidden;
+	}
+
+	.active {
+		color: #fff;
+		background-color: rgb(66, 185, 131);
+		// background-color: #845EC2;
+		// position: sticky;
+		transition: all 0.2s;
+	}
+
 	.uni-form-item {
 		.uni-input {
 			padding: 20rpx;

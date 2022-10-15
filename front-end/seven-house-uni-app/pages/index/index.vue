@@ -21,7 +21,7 @@
 							<p class="order__slogan">一起吨吨吨</p>
 						</view>
 					</view>
-					<view class="order__item  c-flex-1" @click="swiPage('/pages/classify/classify')">
+					<view class="order__item  c-flex-1" @click="navPage('/pages/save-wine/save-wine')">
 						<view class="order__up">
 							<img src="static/images/takeout.png" />
 						</view>
@@ -133,25 +133,23 @@
 			uniCard,
 		},
 		onLoad() {
-
+			// this.$checkLogin("", "2") // 检查登录信息
 		},
 		methods: {
 			// 初始化首页数据
-			// initHomeData() {
-			// 	this.$api.home.reqHomeData().then(({
-			// 		code,
-			// 		data
-			// 	}) => {
-			// 		const {
-			// 			banners,
-			// 			seat,
-			// 			news
-			// 		} = data
-			// 		code === 200 && ({
-			// 			[this.banners, this.seat, this.news] = [banners, seat, news]
-			// 		})
-			// 	})
-			// },
+			initHomeData() {
+				this.$api.home.reqHomeData().then(({
+					code,
+					data
+				}) => {
+					const {
+						banners,
+						seat,
+						news
+					} = data
+					code === 200 && ([this.banners, this.seat, this.news] = [banners, seat, news])
+				})
+			},
 
 			// 监听顾客选择座位的回调
 			bindPickerChange(e) {
@@ -170,7 +168,7 @@
 			},
 
 			// 页面跳转，uni.redirectTo()：只能打开非tabBar页面的路径
-			rediPage: (path = '') => path && uni.redirectTo({
+			navPage: (path = '') => path && uni.redirectTo({
 				url: path
 			}),
 			swiPage: (path = '') => path && uni.switchTab({
@@ -238,11 +236,13 @@
 				z-index: 2;
 				border-radius: 20rpx;
 				// box-shadow: 0 2px 2px 0 #bbb;
+				overflow: hidden;
 
 				a>img {
 					width: 100%;
 					height: 100%;
 					border-radius: 20rpx;
+					max-height: 215px;
 				}
 			}
 		}
@@ -252,12 +252,5 @@
 		.news>h4 {
 			font-size: 24px
 		}
-	}
-
-
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
 	}
 </style>

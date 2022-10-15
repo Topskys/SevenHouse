@@ -4,21 +4,6 @@
 	box-sizing: content-box;
 }
 
-
-/* uni-app,
-uni-page {
-
-	max-width: 540px;
-
-}
-
-.uni-page-head,
-uni-page-wrapper,
-.uni-tabbar {
-	max-width: 540px;
-} */
-
-
 :root {
 	--primary-color: #335eea;
 }
@@ -81,6 +66,18 @@ uni-page-wrapper,
 	/* justify-content: space-around; */
 }
 
+/* grid */
+.grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	/* gap: 20px; */
+}
+
+/* 内边距 */
+.pg10-0 {
+	padding: 20rpx 0;
+}
+
 
 /* 外边距 */
 .mt5 {
@@ -88,5 +85,15 @@ uni-page-wrapper,
 }
 
 .mt10 {
-	margin-top: 20rpx;
+	margin-top: 10px;
+}
+
+.mb20 {
+	margin-bottom: 40rpx;
+}
+
+
+/* 对齐方式 */
+.ta-c {
+	text-align: center;
 }

@@ -1,6 +1,13 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		// {
+		// 	"path": "pages/pay/pay",
+		// 	"style": {
+		// 		"navigationBarTitleText": "填写订单",
+		// 		"enablePullDownRefresh": false
+		// 	}
 
+		// },
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -49,37 +56,35 @@
 			}
 
 		}, {
-			"path": "pages/register/register",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
 			"path": "pages/selfInfo/selfInfo",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "个人信息",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/discount/discount",
 			"style": {
+				"navigationBarTitleText": "优惠劵",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/save-wine/save-wine",
+			"style": {
+				"navigationBarTitleText": "存酒列表",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/pay/pay",
+			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 
 		}
-	    ,{
-            "path" : "pages/save-wine/save-wine",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

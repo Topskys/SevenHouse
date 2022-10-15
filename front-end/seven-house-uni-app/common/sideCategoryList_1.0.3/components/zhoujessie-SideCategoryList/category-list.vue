@@ -46,7 +46,7 @@
 			</view>
 		</view>
 		<view id="body-btn">
-
+			<goods-nav></goods-nav>
 		</view>
 	</view>
 </template>
@@ -73,7 +73,7 @@
 		 @categorySubClick="categorySubClick"></category-list>
 	 */
 	import wmNumberBox from "@/common/wm-numberBox_1.2/components/wm-numberBox/wm-number-box.vue"
-	import uniGoodsNav from '@/common/uni-goods-nav_1.2.1/components/uni-goods-nav/uni-goods-nav.vue'
+	import goodsNav from '@/components/goods-nav/goods-nav.vue'
 	export default {
 		name: "category",
 
@@ -282,7 +282,7 @@
 			IndexAnchor,
 			IndexListComponent,
 			wmNumberBox,
-			uniGoodsNav,
+			goodsNav,
 		}
 	}
 </script>

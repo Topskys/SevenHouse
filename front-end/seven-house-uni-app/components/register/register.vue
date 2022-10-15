@@ -1,15 +1,13 @@
 <template>
 	<view class="register__container" style="min-height: 100vh;padding:0 30rpx">
 		<uni-forms :modelValue="form" ref="form" :rules="rules" validate-trigger="bind">
-			<uni-forms-item name="nickname" class="uni-form-item" label="用户名:" required>
-				<input class="uni-input" v-model="form.nickname" placeholder="请输入用户名" />
-			</uni-forms-item>
-			<uni-forms-item name="phone" class="uni-form-item" label="手机号:" required>
-				<input class="uni-input" v-model="form.phone" type="number" placeholder="请输入手机号" maxlength=11 />
-			</uni-forms-item>
+
 			<uni-forms-item name="email" class="uni-form-item" label="邮箱:" required>
 
 				<input class="uni-input" v-model="form.email" placeholder="请输入邮箱" />
+			</uni-forms-item>
+			<uni-forms-item name="phone" class="uni-form-item" label="手机号:" required>
+				<input class="uni-input" v-model="form.phone" type="number" placeholder="请输入手机号" maxlength=11 />
 			</uni-forms-item>
 			<uni-forms-item name="password" class="uni-form-item" label="密码:" required>
 				<input class="uni-input" password type="text" v-model="form.password" placeholder="请输入密码" />
@@ -39,18 +37,18 @@
 					email: '',
 				},
 				rules: {
-					nickname: {
-						rules: [{
-								required: true,
-								errorMessage: '请输入用户名',
-							},
-							{
-								minLength: 2,
-								maxLength: 10,
-								errorMessage: '用户名长度必须是 {minLength} 到 {maxLength} 个字符',
-							}
-						]
-					},
+					// nickname: {
+					// 	rules: [{
+					// 			required: true,
+					// 			errorMessage: '请输入用户名',
+					// 		},
+					// 		{
+					// 			minLength: 2,
+					// 			maxLength: 10,
+					// 			errorMessage: '用户名长度必须是 {minLength} 到 {maxLength} 个字符',
+					// 		}
+					// 	]
+					// },
 					// 对email字段进行必填验证
 					email: {
 						rules: [{
@@ -96,11 +94,22 @@
 			// 提交登录表单
 			submit(form) {
 				this.$refs.form.validate().then(res => {
-					console.log('表单数据信息：', res);
-					uni.showModal({
-						content: '表单数据内容：' + JSON.stringify(res),
-						showCancel: false
-					});
+					// console.log('表单数据信息：', res);
+					// uni.showModal({
+					// 	content: '表单数据内容：' + JSON.stringify(res),
+					// 	showCancel: false
+					// });
+					this.$api.user.reqRegister(JSON.stringify(res)).then(({
+						code,
+						data
+					}) => {
+						// console.log(res)
+						code === 200 && uni.showToast({
+							title: data.msg,
+							icon: 'none'
+						});
+						// 注册成功，需要手动切换至登录页
+					})
 				}).catch(err => {
 					console.log('表单错误信息：', err);
 				})

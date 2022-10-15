@@ -4,7 +4,8 @@ import App from './App'
 import '@/style/index.css'
 // 引入求情函数
 import api from '@/api/index.js'
-
+//  引入 store 的实例对象
+import store from '@/store/index.js'
 
 
 
@@ -53,7 +54,8 @@ import Vue from 'vue'
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({
-	...App
+	...App,
+	store, // 2. 将 store 挂载到 Vue 实例上
 })
 app.$mount()
 // #endif

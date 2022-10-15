@@ -3,7 +3,7 @@ import request from '@/utils/request'
 
 
 // 请求分类列表
-const reqCategoryList = () => request({
+export const reqCategoryList = () => request({
 	url: '/api/category/list',
 	methods: 'GET'
 })
