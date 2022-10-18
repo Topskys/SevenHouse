@@ -7,7 +7,8 @@ export default {
 		userInfo: JSON.parse(uni.getStorageSync("userInfo") || '{}'),
 		// openId: uni.getStorageSync('openId') || "",
 		token: uni.getStorageSync('token') || "",
-		redirectInfo: null, // 重定向的 object 对象 { openType, from }
+		redirectInfo: null, // 重定向的 object 对象 { openType, from },
+		list: []
 	}),
 
 
@@ -24,6 +25,11 @@ export default {
 		// 将 userinfo 持久化存储到本地
 		saveUserInfoToStorage(state) {
 			uni.setStorageSync('userInfo', JSON.stringify(state.userInfo))
+		},
+
+		// 删除用户信息，重新登录
+		deleteUserInfo() {
+			uni.removeStorageSync('userInfo')
 		},
 
 

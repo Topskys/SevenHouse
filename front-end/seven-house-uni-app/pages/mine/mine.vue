@@ -4,30 +4,31 @@
 			<view class="  r-flex-3">
 				<view class="info__left r-flex-3">
 					<view class="customer__avatar">
-						<img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
+						<img
+							:src="userInfo?userInfo.avatarUrl:'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'">
 					</view>
 					<view>
-						<b @click='navPage("/pages/login/login")'>登录</b>
-						<p>ID:0000001</p>
+						<b @click='userInfo?"":navPage("/pages/login/login")'>{{userInfo?userInfo.nickname:'登录'}}</b>
+						<p>{{userInfo?`ID:${userInfo.id}`:'ID:0000001'}}</p>
 					</view>
 				</view>
-				<view class="info__right">LV1</view>
+				<view class="info__right">{{userInfo?`${userInfo.class}`:'LV1'}}</view>
 			</view>
-			<view style="margin-top: 10px;">
+			<!-- <view style="margin-top: 10px;">
 				<p>会员</p>
 				<progress :percent="last" show-info active />
-			</view>
+			</view> -->
 		</uni-card>
 		<uni-card :isShadow="false" style='border-radius: 20rpx;'>
 			<view class="score__discount">
 				<view class="customer__score">
 					<h4>我的积分</h4>
-					<b>0</b>
+					<b>{{userInfo?userInfo.score:0}}</b>
 					<p>快来用积分兑换您喜欢的宝贝吧~</p>
 				</view>
 				<view class="customer__discount">
 					<h4>优惠劵</h4>
-					<b>0</b>
+					<b>{{userInfo?userInfo.discount:0}}</b>
 					<p>快来使用优惠劵吧~</p>
 				</view>
 			</view>
@@ -48,7 +49,9 @@
 
 <script>
 	import {
-		mapState
+		mapGetters,
+		mapMutations,
+		mapState,
 	} from 'vuex'
 	import uniCard from '@/common/uni-card_1.3.1/components/uni-card/uni-card.vue'
 	export default {
@@ -88,8 +91,19 @@
 		},
 		computed: {
 			...mapState({
-				userInfo: (state) => state.m_user.userInfo
+				userInfo: (state) => {
+					let userInfo = state.m_user.userInfo
+					if (userInfo.avatarUrl) {
+						return userInfo
+					} else {
+						return ""
+					}
+				}
 			})
+		},
+		onLoad() {
+			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
+			setTimeout(this.$checkLogin("/pages/mine/mine", "2"), 5000)
 		},
 		methods: {
 			// 页面跳转，uni.redirectTo()：只能打开非tabBar页面的路径

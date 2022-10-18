@@ -34,6 +34,11 @@
 </template>
 
 <script>
+	import {
+		mapGetters,
+		mapMutations,
+		mapState,
+	} from 'vuex'
 	import uniForms from '@/components/uni-forms_1.4.8/components/uni-forms/uni-forms.vue'
 	import uniFormsItem from '@/components/uni-forms_1.4.8/components/uni-forms-item/uni-forms-item.vue'
 	import register from '@/components/register/register.vue'
@@ -55,6 +60,8 @@
 					fontSize: 38,
 					underLineHeight: 5,
 				},
+				backPath: "/pages/index/index",
+				backType: "2",
 				form: {
 					email: '',
 					password: "",
@@ -86,11 +93,22 @@
 				}
 			}
 		},
+		computed: {
+			...mapState({
+				userInfo: (state) => state.m_user.userInfo,
+				token: (state) => state.m_user.token,
+			})
+		},
+		onLoad(options) {
+			this.backPath = options.backPath || "/pages/index/index"
+			this.backType = options.backType || "2"
+		},
 		onReady() {
 			// 需要在onReady中设置规则
 			this.$refs.form.setRules(this.rules)
 		},
 		methods: {
+			...mapMutations('m_user', ['updateUserInfo', 'updateToken']),
 			// tabs的回调
 			tabClick(val) {
 				this.tab = val
@@ -98,43 +116,43 @@
 			// 提交登录表单
 			submit(form) {
 				this.$refs.form.validate().then(res => {
-					// console.log('表单数据信息：', res);
-					// uni.showModal({
-					// 	content: '表单数据内容：' + JSON.stringify(res),
-					// 	showCancel: false
-					// });
-					this.$api.user.reqLogin(JSON.stringify(res)).then(({
+					// JSON.stringify(res)
+					!(this.userInfo && this.token) ? this.$api.user.reqLogin(JSON.stringify(res)).then(({
 						code,
 						data
 					}) => {
 						if (code === 200) {
 							// 保存用户信息，跳转页面
-							this.$store.commit("updateUserInfo", data.userInfo)
+							this.updateUserInfo(data.userInfo)
 							// 判断当前路径是否携带跳转参数且返回上一级，否则跳转首页
+							this.updateToken(data.token)
+							// 跳转
+							this.backType == "1" ? uni.redirectTo({
+								url: this.backPath
+							}) : uni.switchTab({
+								url: this.backPath
+							})
 						} else {
 							uni.showToast({
 								title: data.msg,
-								icon: 'none'
+								icon: 'error'
 							});
 						}
-					})
+					}): uni.showToast({
+						title: "您已登录",
+						icon: 'success'
+					});
 				}).catch(err => {
 					console.log('表单错误信息：', err);
 				})
-			},
-			// 前往注册
-			// navRegister() {
-			// 	uni.navigateTo({
-			// 		url: '../register/register'
-			// 	})
-			// }
+			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
 	.login__container {
-		min-height: calc(100vh - 44px);
+		height: calc(100vh - 44px);
 		background: #fff;
 		padding: 0 30rpx;
 		overflow: hidden;

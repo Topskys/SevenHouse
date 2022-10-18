@@ -34,23 +34,36 @@
 			uniCard,
 		},
 		onLoad() {
-			// console.log(this.$api.user)
+			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
+			setTimeout(this.$checkLogin("/pages/discount/discount", "1"), 5000)
 		},
 		computed: {
 			...mapState({
 				userInfo: (state) => state.m_user.userInfo
 			})
 		},
+		created() {
+			// this.getDiscountList()
+		},
 		methods: {
+			getDiscountList() {
+				this.$api.user.reqDiscountList().then(({
+					code,
+					data
+				}) => {
+					code == 200 && (this.discount = data.list)
+				})
+			},
 			// 取酒按钮的回调
 			takeout(item) {
 				item && this.$api.user.reqTakeDiscount({
-					...item,
-					...this.userInfo
+					item
 				}).then(({
 					code,
 					data
 				}) => {
+					// this.getDiscountList()
+					// console.log(data)
 					uni.showToast({
 						title: data.msg,
 						icon: code === 200 ? 'success' : 'error'

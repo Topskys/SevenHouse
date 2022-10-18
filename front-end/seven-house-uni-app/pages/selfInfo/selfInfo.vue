@@ -3,50 +3,54 @@
 		<view class="ui-all">
 			<view class="avatar" @tap="avatarChoose">
 				<view class="imgAvatar">
-					<view class="iavatar" :style="'background: url('+avater+') no-repeat center/cover #eeeeee;'"></view>
+					<view class="iavatar">
+						<!-- :style="'background: url('+userInfo.avaterUrl+') no-repeat center/cover #eeeeee;'" -->
+						<img :src="userInfo.avatarUrl?userInfo.avatarUrl:avatar"
+							style="width: 100%;height: 100%;border-radius: 50%;">
+					</view>
 				</view>
-				<text v-if="avater">修改头像</text>
-				<text v-if="!avater">授权微信</text>
-				<button v-if="!avater" open-type="getUserInfo" @tap="getUserInfo" class="getInfo"></button>
+				<text v-if="userInfo.avaterUrl">修改头像</text>
 			</view>
+			<!-- 昵称 -->
 			<view class="ui-list">
 				<text>昵称</text>
-				<input type="text" :placeholder="value" :value="nickName" @input="bindnickName"
+				<input type="text" :placeholder="value" :value="userInfo.nickName" @input="bindnickName"
 					placeholder-class="place" />
 			</view>
+			<!-- 手机号 -->
 			<view class="ui-list">
 				<text>手机号</text>
-				<input type="number" :placeholder="value" :value="mobile" @input="bindnickMobile"
+				<input type="number" :placeholder="value" :value="userInfo.phone" @input="bindnickMobile"
 					placeholder-class="place" />
-				<!-- <input v-if="mobile" type="tel" :placeholder="value" :value="mobile" @input="bindmobile"
-					placeholder-class="place" />
-				<button v-if="!mobile" open-type="getPhoneNumber" @getphonenumber="getphonenumber"
-					class="getInfo bun">授权手机号</button> -->
 			</view>
+			<!-- 性别 -->
 			<view class="ui-list right">
 				<text>性别</text>
-				<picker @change="bindPickerChange" mode='selector' range-key="name" :value="index" :range="sex">
+				<picker @change="bindPickerChange" mode='selector' range-key="name" :value="index" :range="genders">
 					<view class="picker">
-						{{sex[index].name}}
+						{{genders[index].name}}
 					</view>
 				</picker>
 			</view>
+			<!-- 常驻地址 -->
 			<view class="ui-list">
-				<text>收货地址</text>
-				<input type="text" :placeholder="value" :value="region" @input="bindnickRegion"
+				<text>常驻地址</text>
+				<input type="text" :placeholder="value" :value="userInfo.address" @input="bindnickRegion"
 					placeholder-class="place" />
 			</view>
+			<!-- 生日 -->
 			<view class="ui-list right">
 				<text>生日</text>
-				<picker mode="date" :value="date" @change="bindDateChange">
+				<picker mode="date" :value="userInfo.birthday" @change="bindDateChange">
 					<view class="picker">
-						{{date}}
+						{{userInfo.birthday?userInfo.birthday:value}}
 					</view>
 				</picker>
 			</view>
+			<!-- 签名 -->
 			<view class="ui-list">
 				<text>签名</text>
-				<textarea :placeholder="value" placeholder-class="place" :value="description"
+				<textarea :placeholder="value" placeholder-class="place" :value="userInfo.sign"
 					@input="binddescription"></textarea>
 			</view>
 			<button class="save" @tap="savaInfo">保 存 修 改</button>
@@ -56,53 +60,75 @@
 </template>
 
 <script>
+	import {
+		mapGetters,
+		mapMutations,
+		mapState,
+	} from 'vuex'
 	export default {
 		data() {
 			return {
+				avatar: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
 				value: '请填写',
-				sex: [{
+				index: 0,
+				genders: [{
 					id: 1,
 					name: '男'
 				}, {
 					id: 2,
 					name: '女'
 				}],
-				index: 0,
-				region: '', //大学城学府南路000号
-				date: '请填写',
-				avater: 'static/login.png',
-				description: '',
-				url: '',
-				nickName: '',
-				mobile: '',
-				headimg: ''
-
+				// info: {
+				// 	nickname: "",
+				// 	avatarUrl: "",
+				// 	gender: '', // 0 or 1
+				// 	address: '',
+				// 	phone: '',
+				// 	birthday: '',
+				// 	sign: '', // 签名
+				// }
 			}
 
 		},
+		onLoad() {
+			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
+			setTimeout(this.$checkLogin("/pages/selfInfo/selfInfo", "1"), 5000)
+		},
+		computed: {
+			...mapState({
+				userInfo: (state) => {
+					let userInfo = state.m_user.userInfo
+					if (userInfo.avatarUrl) {
+						return userInfo
+					} else {
+						this.reLogin()
+						return ""
+					}
+				}
+			})
+		},
 		methods: {
+			...mapMutations('m_user', ['updateUserInfo', 'deleteUserInfo']),
 			bindPickerChange(e) {
 				this.index = e.detail.value;
-
+				this.userInfo.gender = this.index
 			},
 			bindnickRegion(e) {
-				this.region = e.detail.value;
-
+				this.userInfo.address = e.detail.value;
 			},
 			bindDateChange(e) {
-				this.date = e.detail.value;
-
+				this.userInfo.birthday = e.detail.value;
 			},
 			bindnickName(e) {
-				this.nickName = e.detail.value;
+				this.userInfo.nickName = e.detail.value;
 
 			},
 			bindnickMobile(e) {
-				this.mobile = e.detail.value;
+				this.userInfo.phone = e.detail.value;
 
 			},
 			binddescription(e) {
-				this.description = e.detail.value;
+				this.userInfo.sign = e.detail.value;
 
 			},
 			avatarChoose() {
@@ -118,38 +144,17 @@
 					}
 				});
 			},
-			getUserInfo() {
-				uni.getUserProfile({
-					desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-					success: (res) => {
-						console.log(res);
-						uni.showToast({
-							title: '已授权',
-							icon: 'none',
-							duration: 2000
-						})
-					}
-				})
-			},
-			getphonenumber(e) {
-				if (e.detail.iv) {
-					console.log(e.detail.iv) //传后台解密换取手机号
-					uni.showToast({
-						title: '已授权',
-						icon: 'none',
-						duration: 2000
-					})
-				}
-			},
 			savaInfo() {
 				let that = this;
-				let nickname = that.nickName;
-				let headimg = that.headimg;
-				let gender = that.index + 1;
-				let mobile = that.mobile;
-				let region = that.region;
-				let birthday = that.date;
-				let description = that.description;
+				let nickname = that.userInfo.nickName;
+				// let avatarUrl = that.userInfo.avatarUrl;
+				let avatarUrl = that.avatar;
+				let gender = that.index;
+				let phone = that.userInfo.phone;
+				let address = that.userInfo.address;
+				let birthday = that.userInfo.birthday;
+				let sign = that.userInfo.sign;
+
 				let updata = {};
 				if (!nickname) {
 					uni.showToast({
@@ -160,13 +165,10 @@
 					return;
 				}
 				updata.nickname = nickname;
-				if (!headimg) {
-					headimg = that.avater;
-				}
-				updata.headimg = headimg;
+				updata.avatarUrl = avatarUrl;
 				updata.gender = gender;
-				if (that.isPoneAvailable(mobile)) {
-					updata.mobile = mobile;
+				if (that.isPoneAvailable(phone)) {
+					updata.phone = phone;
 				} else {
 					uni.showToast({
 						title: '手机号码有误，请重填',
@@ -175,7 +177,7 @@
 					});
 					return;
 				}
-				if (!region) {
+				if (!address) {
 					uni.showToast({
 						title: '请填写收货地址',
 						icon: 'none',
@@ -183,7 +185,7 @@
 					});
 					return;
 				} else {
-					updata.region = region
+					updata.address = address
 				}
 				if (birthday == "0000-00-00") {
 					uni.showToast({
@@ -194,8 +196,8 @@
 					return;
 				}
 				updata.birthday = birthday;
-				updata.description = description;
-				that.updata(updata);
+				updata.sign = sign;
+				that.updateInfo(updata);
 			},
 			isPoneAvailable(poneInput) {
 				var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
@@ -205,10 +207,32 @@
 					return true;
 				}
 			},
-			async updata(datas) {
+			updateInfo(updata = {}) {
 				//传后台
-
+				this.$api.user.reqUpdateInfo(updata).then(({
+					code,
+					data
+				}) => {
+					if (code === 200) {
+						this.$api.user.reqUserInfo().then(({
+							code,
+							data
+						}) => { // 更新用户信息
+							(code === 200) && this.updateUserInfo(data.userInfo)
+							uni.showToast({
+								title: data.msg,
+								icon: code === 200 ? 'success' : 'error'
+							})
+						})
+					} else {
+						uni.showToast({
+							title: data.msg,
+							icon: 'error'
+						})
+					}
+				})
 			},
+			// 该功能暂时不做
 			imgUpload(file) {
 				let that = this;
 				uni.uploadFile({
@@ -235,10 +259,13 @@
 					}
 				});
 			},
-
+			reLogin() {
+				this.deleteUserInfo("userInfo")
+				uni.navigateTo({
+					url: "/pages/login/login",
+				})
+			}
 		},
-		onLoad() {}
-
 	}
 </script>
 

@@ -6,7 +6,8 @@ import '@/style/index.css'
 import api from '@/api/index.js'
 //  引入 store 的实例对象
 import store from '@/store/index.js'
-
+// 引入mockjs服务
+require('@/mock/index.js')
 
 
 
@@ -18,7 +19,7 @@ Vue.prototype.$api = api
 // backpage, backtype 2个参数分别代表：
 // backpage : 登录后返回的页面
 // backtype : 打开页面的类型[1 : redirectTo 2 : switchTab]
-Vue.prototype.$checkLogin = (backPath, backType) => {
+Vue.prototype.$checkLogin = (backPath = '#', backType = '2') => {
 	var token = uni.getStorageSync("token") || ""
 	var userInfo = JSON.parse(uni.getStorageSync("userInfo") || '{}')
 	if (token == "" || userInfo == {}) {

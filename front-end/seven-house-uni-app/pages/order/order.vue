@@ -2,26 +2,26 @@
 	<view>
 		<liuyuno-tabs :tabData="tabs" :defaultIndex="defaultIndex" @tabClick='tabClick' :config='config' />
 		<scroll-view v-show="defaultIndex==0" scroll-y="true" class="scroll">
-			<uni-card :isShadow="false" style='border-radius: 20rpx;' v-for="item in 10" :key='item'>
+			<uni-card :isShadow="false" style='border-radius: 20rpx;' v-for="item in newOrder" :key='item.id'>
 				<view class="order__item">
 					<view class="order__header r-flex-3">
-						<view class="header__left">订单编号：X1234568898098{{item.isbn}}</view>
-						<view class="header__right">待付款{{item.status}}</view>
+						<view class="header__left">订单编号：{{item.orderId}}</view>
+						<view class="header__right">{{item.status}}</view>
 					</view>
 					<view class="order__body r-flex-1 mt10">
 						<view class="body__left">
 							<img src="static/images/banner1.png" />
 						</view>
 						<view class="body__right" style="flex: 1;">
-							<b class='order__title'>贵州茅台酒套餐{{item.name}}</b>
+							<b class='order__title'>{{item.name}}</b>
 							<view class="r-flex-3">
-								<p style="font-size: 12px;">下单时间：{{item.time}}</p>
-								<p style="font-size: 12px;">x1{{item.count}}</p>
+								<p style="font-size: 12px;margin: 5px 0;">下单时间：{{item.time}}</p>
+								<p style="font-size: 12px;">x{{item.count}}</p>
 							</view>
 							<view class="body__price r-flex-5" style="color: #000;">
-								<span>优惠：</span><span style='margin-right: 10px;'>{{item.discount}}0元</span>
+								<span>优惠：</span><span style='margin-right: 10px;'>{{item.discount}}元</span>
 								<span>实付：￥</span><span
-									style='color: orangered;font-size: 18px;'>{{item.price}}3299元</span>
+									style='color: orangered;font-size: 18px;'>{{item.payPrice}}元</span>
 							</view>
 						</view>
 					</view>
@@ -29,8 +29,11 @@
 						<view>
 							<button type="default" size="mini"
 								style="margin-right: 10px;border: 1px solid #335eea;background-color: #fff;"
-								@click='cancel(item)'>取消订单</button>
-							<button type="primary" size="mini" @click='navPage("/pages/pay/pay")'>立即付款</button>
+								@click='del(item)'>取消订单</button>
+							<button type="primary" size="mini" @click='navPay(item)'>
+
+								立即付款
+							</button>
 						</view>
 						<!-- <view
 							style="border: 1px solid #335eea; color:#335eea;font-size: 28rpx;padding:0 20rpx;line-height: 2;border-radius: 10rpx;margin-right:20rpx;">
@@ -45,27 +48,26 @@
 		</scroll-view>
 
 		<scroll-view v-show="defaultIndex==1" scroll-y="true" class='scroll'>
-
-			<uni-card :isShadow="false" style='border-radius: 20rpx;' v-for="item in 2" :key='item'>
+			<uni-card :isShadow="false" style='border-radius: 20rpx;' v-for="item in oldOrder" :key='item.id'>
 				<view class="order__item">
 					<view class="order__header r-flex-3">
-						<view class="header__left">订单编号：X1234568898098{{item.isbn}}</view>
-						<view class="header__right">交易成功{{item.status}}</view>
+						<view class="header__left">订单编号：{{item.orderId}}</view>
+						<view class="header__right">{{item.status}}</view>
 					</view>
 					<view class="order__body r-flex-1 mt10">
 						<view class="body__left">
 							<img src="static/images/banner1.png" />
 						</view>
 						<view class="body__right" style="flex: 1;">
-							<b class='order__title'>贵州茅台酒套餐{{item.name}}</b>
+							<b class='order__title'>{{item.name}}</b>
 							<view class="r-flex-3">
-								<p style="font-size: 12px;">下单时间：{{item.time}}</p>
-								<p style="font-size: 12px;">x1{{item.count}}</p>
+								<p style="font-size: 12px;margin: 5px 0;">下单时间：{{item.time}}</p>
+								<p style="font-size: 12px;">x{{item.count}}</p>
 							</view>
 							<view class="body__price r-flex-5" style="color: #000;">
-								<span>优惠：</span><span style='margin-right: 10px;'>{{item.discount}}0元</span>
+								<span>优惠：</span><span style='margin-right: 10px;'>{{item.discount}}元</span>
 								<span>实付：￥</span><span
-									style='color: orangered;font-size: 18px;'>{{item.price}}3299元</span>
+									style='color: orangered;font-size: 18px;'>{{item.payPrice}}元</span>
 							</view>
 						</view>
 					</view>
@@ -75,7 +77,6 @@
 				</view>
 			</uni-card>
 		</scroll-view>
-
 	</view>
 </template>
 
@@ -91,42 +92,49 @@
 					activeColor: '#335eea',
 					underLineColor: '#335eea',
 				},
-				order: {
-					newOrder: [],
-					oldOrder: [],
-				},
+				newOrder: [],
+				oldOrder: [],
 			}
 		},
 		components: {
 			liuyunoTabs,
 			uniCard,
 		},
+		created() {
+			this.getOrderList()
+		},
+		onLoad() {
+			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
+			setTimeout(this.$checkLogin("/pages/order/order", "2"), 5000)
+		},
 		methods: {
 			// 获取订单
 			getOrderList() {
-				this.$api.reqOrderList().then(({
+				this.$api.order.reqOrderList().then(({
 					code,
 					data
 				}) => {
+					if (code == 200) {
+						const {
+							list
+						} = data
+						let [newOrder, oldOrder] = [
+							[],
+							[]
+						]
+						newOrder = list.filter(item => {
+							if (item.pay) {
+								oldOrder.push(item)
+							} else {
+								return item
+							}
+						});
+						[this.newOrder, this.oldOrder] = [newOrder, oldOrder]
+					}
 					uni.showToast({
 						title: data.msg,
-						icon: code === 200 ? () => {
-							const {
-								order
-							} = data.order
-							let [newOrder, oldOrder] = [
-								[],
-								[]
-							]
-							newOrder = order.filter(item => {
-								if (item.isNew) {
-									return item
-								} else {
-									oldOrder.push(item)
-								}
-							})[this.order.newOrder, this.order.oldArr] = [newOrder, oldOrder]
-							return 'success'
-						} : 'error'
+						icon: code === 200 ?
+							'success' : 'error'
 					})
 				})
 			},
@@ -135,36 +143,35 @@
 				this.defaultIndex = val
 			},
 			// 取消订单按钮的回调
-			cancel(item) {
-				this.$api.reqDelOrder(item).then(({
-					code,
-					data
-				}) => {
-					uni.showToast({
-						title: data.msg,
-						icon: code === 200 ? () => {
-							this.getOrderList()
-							return 'success'
-						} : 'error'
-					})
+			// cancel(item) {
+			// 	this.$api.order.reqDelOrder(item).then(({
+			// 		code,
+			// 		data
+			// 	}) => {
+			// 		code === 200 && this.getOrderList()
+			// 		uni.showToast({
+			// 			title: data.msg,
+			// 			icon: code === 200 ? 'success' : 'error'
+			// 		})
+			// 	})
+			// },
+			// 立即支付按钮的回调
+			navPay: (item) => {
+				uni.navigateTo({
+					url: `/pages/pay/pay?orders=${encodeURIComponent(JSON.stringify([item]))}`,
 				})
 			},
-			// 立即支付按钮的回调
-			navPage: (path = '') => uni.navigateTo({
-				url: path
-			}),
 			// 删除历史订单
+			// 取消订单按钮的回调
 			del(item) {
-				this.$api.reqDelOrder(item).then(({
+				this.$api.order.reqDelOrder(item).then(({
 					code,
 					data
 				}) => {
+					code === 200 && this.getOrderList()
 					uni.showToast({
 						title: data.msg,
-						icon: code === 200 ? () => {
-							this.getOrderList()
-							return 'success'
-						} : 'error'
+						icon: code === 200 ? 'success' : 'error'
 					})
 				})
 			}

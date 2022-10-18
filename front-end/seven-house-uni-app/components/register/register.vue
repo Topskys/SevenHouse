@@ -32,7 +32,7 @@
 			return {
 				form: {
 					phone: '',
-					nickname: "",
+					// nickname: "",
 					password: "",
 					email: '',
 				},
@@ -94,19 +94,14 @@
 			// 提交登录表单
 			submit(form) {
 				this.$refs.form.validate().then(res => {
-					// console.log('表单数据信息：', res);
-					// uni.showModal({
-					// 	content: '表单数据内容：' + JSON.stringify(res),
-					// 	showCancel: false
-					// });
-					this.$api.user.reqRegister(JSON.stringify(res)).then(({
+					// JSON.stringify(res)
+					this.$api.user.reqRegister(res).then(({
 						code,
 						data
 					}) => {
-						// console.log(res)
-						code === 200 && uni.showToast({
+						uni.showToast({
 							title: data.msg,
-							icon: 'none'
+							icon: code === 200 ? 'success' : 'error'
 						});
 						// 注册成功，需要手动切换至登录页
 					})
@@ -114,12 +109,6 @@
 					console.log('表单错误信息：', err);
 				})
 			},
-			// 前往注册
-			navRegister() {
-				uni.navigateTo({
-					url: '../register/register'
-				})
-			}
 		}
 	}
 </script>

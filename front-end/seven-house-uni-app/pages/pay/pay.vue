@@ -2,20 +2,19 @@
 	<view class="pay__container">
 		<!-- 商品列表 -->
 		<scroll-view scroll-y="true" class="scroll">
-			<uni-card :isShadow="false" style='border-radius: 20rpx;' v-for="item in 5" :key='item'>
+			<uni-card :isShadow="false" style='border-radius: 20rpx;' v-for="item in pay.orders" :key='item.id'>
 				<view class="order__item">
 					<view class="order__body r-flex-1 ">
 						<view class="body__left" style="margin-right: 10px;">
-							<img src="static/images/banner1.png"
-								style='width: 75px; height: 75px; border-radius: 5px;' />
+							<img :src="item.imgUrl" style='width: 75px; height: 75px; border-radius: 5px;' />
 						</view>
 						<view class="body__right" style="flex: 1;">
-							<b style='color: #000;font-size: 16px;'>贵州茅台酒套餐</b>
+							<b style='color: #000;font-size: 16px;'>{{item.name}}</b>
 							<view style="font-size: 14px;">
-								<span>数量：</span> <span style='color: orangered;'>x1</span>
+								<span>数量：</span> <span style='color: orangered;'>x{{item.count}}</span>
 							</view>
 							<view style="font-size: 14px;">
-								<span>单价：</span> <span style='color: orangered;'>￥520.00</span>
+								<span>单价：</span> <span style='color: orangered;'>￥{{item.price}}</span>
 							</view>
 						</view>
 					</view>
@@ -28,13 +27,13 @@
 				<span>优惠劵</span><span>暂无可用优惠劵</span>
 			</view>
 			<view class="r-flex-3 li">
-				<span>总金额</span><span style='color:#42b983;'>￥{{pay.total}}</span>
+				<span>总金额</span><span style='color:#42b983;'>￥{{pay.totalPrice}}</span>
 			</view>
 			<view class="r-flex-3 li">
 				<span>优惠</span><span style='color:#42b983;'>￥0</span>
 			</view>
 			<view class="r-flex-3 li">
-				<span>数量</span><span>{{pay.nums}}</span>
+				<span>数量</span><span>{{pay.totalCount}}</span>
 			</view>
 		</view>
 		<!-- 支付配置 -->
@@ -71,7 +70,7 @@
 		<!-- 支付控制栏 -->
 		<view class="pay__bar r-flex-3">
 			<view class="pay__left">
-				实付<text class="pay__total"><span class='pay__cn'>￥</span><span>{{pay.total}}</span></text>
+				实付<text class="pay__total"><span class='pay__cn'>￥</span><span>{{pay.totalPrice}}</span></text>
 			</view>
 			<view class="pay__right">
 				<button type="primary" size="mini" @click="payOrder">支付订单</button>
@@ -106,24 +105,41 @@
 					name: '微信'
 				}],
 				pay: {
-					saveWine: '否',
-					payWay: '支付宝',
-					total: 29,
-					nums: 0,
+					orders: [],
 					note: '',
-					orcer: '',
+					totalPrice: 0,
+					totalCount: 0,
 				}
 			}
 
 		},
+		onLoad: function(option) {
+			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
+			setTimeout(this.$checkLogin("/pages/pay/pay", "1"), 5000)
+			// 获取参数
+			const orders = JSON.parse(decodeURIComponent(option.orders));
+			// (orders || orders.length) && this.dealOrder(orders)
+			if (orders || orders.length) {
+				this.pay.orders = orders.list
+				this.pay.totalCount = orders.count
+				this.pay.totalPrice = orders.total
+			}
+		},
 		methods: {
+			// 订单数据预处理
+			// dealOrder(arr = []) {
+			// 	[this.pay.totalPrice, this.pay.totalCount] = [`${arr.reduce((sum, item) => sum += item.payPrice, 0)}`,
+			// 		`${arr.reduce((sum, item) => sum += item.count, 0)}`
+			// 	]
+			// 	this.pay.orders = arr
+			// },
 			// 支付订单按钮的回调
 			payOrder: function() {
 				this.$api.order.reqPayOrder(this.pay).then(({
 					code,
 					data
 				}) => {
-					code === 200 ? [
+					code === 200 ? (data.payToken && [
 						uni.showToast({
 							title: data.msg || '支付成功',
 							icon: 'success',
@@ -134,7 +150,7 @@
 								url: `/pages/order/order`
 							})
 						}, 2500)
-					] : uni.showToast({
+					]) : uni.showToast({
 						title: data.msg || '支付失败',
 						icon: 'error'
 					})
@@ -153,7 +169,7 @@
 			},
 
 		},
-		onLoad() {}
+
 
 	}
 </script>
@@ -164,13 +180,13 @@
 
 <style lang="scss" scoped>
 	.pay__container {
-		min-height: calc(100vh - 44px);
+		height: calc(100vh - 44px);
 		background-color: #eee;
 		position: relative;
 		overflow: hidden;
 
 		.scroll {
-			height: 180px;
+			max-height: 360rpx;
 			padding: 18rpx 0;
 			margin: 5px 0;
 			background-color: #fff;

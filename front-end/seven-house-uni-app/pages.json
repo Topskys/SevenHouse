@@ -37,7 +37,7 @@
 		}, {
 			"path": "pages/club/club",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "官方部落",
 				"enablePullDownRefresh": false
 			}
 
@@ -79,7 +79,7 @@
 		}, {
 			"path": "pages/pay/pay",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "填写订单",
 				"enablePullDownRefresh": false
 			}
 

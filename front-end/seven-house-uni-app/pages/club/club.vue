@@ -11,9 +11,10 @@
 
 			}
 		},
-		methods: {
-
-		}
+		onLoad() {
+			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
+			setTimeout(this.$checkLogin("/pages/club/club", "1"), 5000)
+		},
 	}
 </script>
 

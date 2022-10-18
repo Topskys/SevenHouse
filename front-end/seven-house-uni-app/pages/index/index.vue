@@ -1,10 +1,12 @@
 <template>
 	<scroll-view scroll-y="true" style="height: calc(100vh - 44px - 62.78px );  background-color: #eee;">
+		<!-- 轮播 -->
 		<view class="swiper__container">
 			<swiper circular :indicator-dots="true" :autoplay="true" :interval="2000" :duration="500"
 				style="height: 180px;">
 				<swiper-item v-for="(item,index) in banners" :key="index">
-					<img :src="item.imgUrl" alt="404" style="width: 100%;height: 100%;" />
+					<a :href="item.url" target="_blank"><img :src="item.imgUrl" alt="404"
+							style="width: 100%;height: 100%;" /></a>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -35,7 +37,7 @@
 				<view class="order__seat">
 					<picker @change="bindPickerChange" mode='selector' range-key="name" :value="index" :range="seat">
 						<view class="picker" :style="{color:index===0?'#E6A23C':'#335eea'}">
-							{{seat[index].name}}
+							{{seat[index]?seat[index].name:"您尚未选座？选座"}}
 						</view>
 					</picker>
 				</view>
@@ -68,7 +70,7 @@
 			<h4>会员新鲜事</h4>
 			<view class="news__list">
 				<view class="news__item" v-for="item,index in news" :key='index'>
-					<a :href="item.url" target="_bank">
+					<a :href="item.url" target="_blank">
 						<img :src="item.imgUrl " />
 					</a>
 				</view>
@@ -84,56 +86,20 @@
 		data() {
 			return {
 				index: 0,
-				// 选座（或选包间）
-				seat: [{
-					id: 0,
-					name: '您尚未选座？选座'
-				}, {
-					id: 1,
-					name: '#001 座'
-				}, {
-					id: 2,
-					name: '#002 座'
-				}, {
-					id: 3,
-					name: '#003 座'
-				}, {
-					id: 4,
-					name: '#004 座'
-				}, {
-					id: 5,
-					name: '#005 包间'
-				}],
-				banners: [{
-						imgUrl: 'static/images/banner1.png',
-					},
-					{
-						imgUrl: 'static/images/banner2.png',
-					},
-					{
-						imgUrl: 'static/images/banner2.png',
-					},
-				],
-				news: [{
-						imgUrl: 'static/images/news2.png',
-						url: '',
-					},
-					{
-						imgUrl: 'static/images/news1.png',
-						url: '',
-					},
-					{
-						imgUrl: 'static/images/news3.png',
-						url: '',
-					},
-				]
+				seat: [], // 选座（或选包间）
+				banners: [], // 顶部广告
+				news: [], // 底部新鲜趣事
 			}
 		},
 		components: {
 			uniCard,
 		},
+		created() {
+			this.initHomeData()
+		},
 		onLoad() {
-			// this.$checkLogin("", "2") // 检查登录信息
+			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
+			setTimeout(this.$checkLogin("/pages/index/index", "2"), 5000)
 		},
 		methods: {
 			// 初始化首页数据
@@ -150,25 +116,27 @@
 					code === 200 && ([this.banners, this.seat, this.news] = [banners, seat, news])
 				})
 			},
-
 			// 监听顾客选择座位的回调
 			bindPickerChange(e) {
-				this.index = e.detail.value;
-				// this.index !== 0 && setTimeout(() => {
-				// 	this.$api.home.reqSetSeat().then(({
-				// 		code,
-				// 		data
-				// 	}) => {
-				// 		code === 200 && uni.showToast({
-				// 			title: data.msg,
-				// 			icon: 'none'
-				// 		});
-				// 	})
-				// }, 1000)
+				var _this = this
+				_this.index = e.detail.value;
+				_this.index !== 0 && setTimeout(function() {
+					_this.$api.home.reqSetSeat({
+						username: 123456,
+						..._this.seat[_this.index]
+					}).then(({
+						code,
+						data
+					}) => {
+						code === 200 && uni.showToast({
+							title: data.msg,
+							icon: 'success'
+						});
+					})
+				}, 1000)
 			},
-
-			// 页面跳转，uni.redirectTo()：只能打开非tabBar页面的路径
-			navPage: (path = '') => path && uni.redirectTo({
+			// 页面跳转
+			navPage: (path = '') => path && uni.navigateTo({
 				url: path
 			}),
 			swiPage: (path = '') => path && uni.switchTab({
