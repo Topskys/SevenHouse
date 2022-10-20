@@ -19,8 +19,8 @@ npm run dev
 
 <div>如果图片不显示可前往：<a href="https://github.com/Topskys/xxl/tree/main/front-end/seven-house-manage">github.com</a> </div>
 
-![Image text]("https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/home.png")
-![Image text]("https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/product.png")
-![Image text]("https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/order.png")
-![Image text]("https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/customer.png")
-![Image text]("https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/login.png")
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/home.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/product.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/order.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/customer.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/login.png)
