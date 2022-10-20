@@ -48,40 +48,17 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     @Transactional(rollbackFor = Exception.class)
     public Result addUserOrder(OrderDTO orderDTO) {
 
-        try {
-            Orders orders= new Orders();
-            List<OrderProductDTO> dtos = orderDTO.getOrderProductDTOS();
-            dtos.forEach(item->{
-                Alcohols alco = alcoholsMapper.selectOne(new QueryWrapper<Alcohols>().eq("alco_id", item.getAlcoId()));
-                String combination = alco.getAlcoName()+",";
-                orders.setUserId(orderDTO.getUserId());
-                orders.setCombination(combination);
-                orders.setTotal(orderDTO.getTotal());
-                orders.setDeskId(orderDTO.getDeskId());
-                orders.setPhone(orderDTO.getPhone());
-                orders.setPayType(orderDTO.getPayType());
-                orders.setStatus("0");
-                orders.setRemark(orderDTO.getRemark());
-                orders.setCreateTime(LocalDateTime.now());
-                orders.setUpdateTime(LocalDateTime.now());
-            });
-            addUserOrder(orders, dtos);
-            return Result.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.error();
-        }
-    }
+        Long orderId = System.currentTimeMillis() / 10 / 1000;//生成十位订单的id
+        Long ItemId = System.currentTimeMillis() / 10 / 1000;//生成十位订单的id
 
-    @Transactional(rollbackFor = Exception.class)
-    public void addUserOrder(Orders orders,List<OrderProductDTO> dtos){
-        ordersMapper.insert(orders);
+        //插入订单多条记录
+        List<OrderProductDTO> dtos = orderDTO.getOrderProductDTOS();
         OrderItem orderItem = new OrderItem();
         dtos.forEach(item->{
             Alcohols alco = alcoholsMapper.selectOne(new QueryWrapper<Alcohols>().eq("alco_id", item.getAlcoId()));
             AlcoholsSku sku = alcoholsSkuMapper.selectOne(new QueryWrapper<AlcoholsSku>().eq("alco_id", alco.getAlcoId()).eq("sku_cap", item.getSkuName()));
-            orderItem.setOrderId(orders.getId());
-            orderItem.setAlcoId(item.getAlcoId());
+            orderItem.setId(ItemId);
+            orderItem.setOrderId(orderId);
             orderItem.setAcloPrice(sku.getSkuSellprice());
             orderItem.setAlcoName(alco.getAlcoName());
             orderItem.setAlcoSku(sku.getSkuCap());
@@ -90,26 +67,32 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             orderItem.setUpdateTime(LocalDateTime.now());
             orderItemMapper.insert(orderItem);
 
-            if (item.getSkuName().equals("整瓶")){
-                if (sku.getSkuStock()-item.getBuyNum()>0){
-                    sku.setSkuStock(sku.getSkuStock()-item.getBuyNum());
-                }
-                alcoholsSkuMapper.updateById(sku);
-            }else {
-                if (sku.getSkuStock()<item.getBuyNum()){
-                    AlcoholsSku sku1 = alcoholsSkuMapper.selectOne(new QueryWrapper<AlcoholsSku>().eq("alco_id", alco.getAlcoId()).eq("sku_cap", "整瓶"));
-                    sku1.setSkuStock(sku1.getSkuStock()-1);
-                    alcoholsSkuMapper.updateById(sku1);
-                    sku.setSkuStock(sku.getSkuStock()+10-item.getBuyNum());
-                    alcoholsSkuMapper.updateById(sku);
-                }else {
-                    sku.setSkuStock(sku.getSkuStock()-item.getBuyNum());
-                    alcoholsSkuMapper.updateById(sku);
-                }
+            //减少商品的库存的数量
+            if (sku.getSkuStock()-item.getBuyNum()>0){
+                sku.setSkuStock(sku.getSkuStock()-item.getBuyNum());
             }
-
+            alcoholsSkuMapper.updateById(sku);
         });
+
+        Orders orders= new Orders();
+        orders.setId(orderId);
+        orders.setUserId(orderDTO.getUserId());
+        orders.setTotal(orderDTO.getTotal());
+        orders.setDeskId(orderDTO.getDeskId());
+        orders.setPhone(orderDTO.getPhone());
+        orders.setPayType(orderDTO.getPayType());
+        orders.setStatus("0");
+        orders.setRemark(orderDTO.getRemark());
+        orders.setCreateTime(LocalDateTime.now());
+        orders.setUpdateTime(LocalDateTime.now());
+        int id = ordersMapper.insert(orders);
+        if (id>0){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
 
 
     }
+
 }

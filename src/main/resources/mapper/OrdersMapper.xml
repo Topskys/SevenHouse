@@ -6,7 +6,6 @@
     <resultMap id="BaseResultMap" type="com.house.xxl.model.Orders">
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
-        <result column="combination" property="combination" />
         <result column="total" property="total" />
         <result column="desk_id" property="deskId" />
         <result column="phone" property="phone" />
@@ -19,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, combination, total, desk_id, phone, pay_type, status, remark, create_time, update_time
+        id, user_id, total, desk_id, phone, pay_type, status, remark, create_time, update_time
     </sql>
 
 </mapper>

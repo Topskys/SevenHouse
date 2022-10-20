@@ -1,6 +1,9 @@
 package com.house.xxl.web;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.house.xxl.common.Result;
 import com.house.xxl.model.Desk;
 import com.house.xxl.service.Deskservice;
@@ -36,6 +39,13 @@ public class DeskController {
     @GetMapping("getDeskList")
     public Result getStroeInfo() {
         List<Desk> list = deskService.list();
+        return Result.success(list);
+    }
+
+    @ApiOperation(value = "获取空闲桌子信息")
+    @GetMapping("getFreeDesk")
+    public Result getFreeDesk() {
+        List<Desk> list = deskService.list(new QueryWrapper<Desk>().eq("deskStatus", "0"));
         return Result.success(list);
     }
 

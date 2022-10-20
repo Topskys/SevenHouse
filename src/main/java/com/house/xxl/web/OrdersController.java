@@ -95,7 +95,7 @@ public class OrdersController {
 
     @ApiOperation(value = "用户提交订单")
     @PostMapping("addUserOrder")
-    public Result addUserOrder(OrderDTO orderDTO){
+    public Result addUserOrder(@RequestBody OrderDTO orderDTO){
         return  ordersService.addUserOrder(orderDTO);
     }
 

@@ -5,7 +5,6 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.house.xxl.model.OrderItem">
         <id column="id" property="id" />
-        <result column="alco_id" property="alcoId" />
         <result column="aclo_price" property="acloPrice" />
         <result column="alco_name" property="alcoName" />
         <result column="alco_sku" property="alcoSku" />
@@ -17,7 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, alco_id, aclo_price, alco_name,alco_sku, order_id, buy_num, create_time, update_time
+        id, aclo_price, alco_name,alco_sku, order_id, buy_num, create_time, update_time
     </sql>
 
 </mapper>

@@ -26,13 +26,9 @@ public class OrderItem extends Model<OrderItem> {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
-    /**
-     * 酒的id
-     */
-    private Long alcoId;
 
     /**
      * 价格
@@ -52,7 +48,7 @@ public class OrderItem extends Model<OrderItem> {
     /**
      * 订单id
      */
-    private Integer orderId;
+    private Long orderId;
 
     /**
      * 购买数量

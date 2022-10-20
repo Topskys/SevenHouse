@@ -29,18 +29,14 @@ public class Orders extends Model<Orders> {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    @TableId(value = "id", type = IdType.INPUT)
+    private Long id;
 
     /**
      * 用户id
      */
     private Integer userId;
 
-    /**
-     * 订单产品组合名称
-     */
-    private String combination;
 
     /**
      * 订单价格

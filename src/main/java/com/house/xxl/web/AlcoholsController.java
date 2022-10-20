@@ -108,7 +108,13 @@ public class AlcoholsController {
     @Transactional(rollbackFor = Exception.class)
     public Result getAllAlc() {
         List<Alcohols> alcoholsList = alcoholsService.list(new QueryWrapper<Alcohols>().eq("alco_status", "0"));
-
+        alcoholsList.stream().forEach(item -> {
+            Long alcoId = item.getAlcoId();
+            List<AlcoholsSku> list = alcoholsSkuService.list(new QueryWrapper<AlcoholsSku>().eq("alco_id", alcoId));
+            if (list != null) {
+                item.setAlcoholsSku(list);
+            }
+        });
         return Result.success(alcoholsList);
     }
 

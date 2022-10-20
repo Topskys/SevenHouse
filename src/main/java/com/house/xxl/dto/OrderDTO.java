@@ -30,11 +30,6 @@ public class OrderDTO {
     private Integer userId;
 
     /**
-     * 订单产品组合名称
-     */
-    private String combination;
-
-    /**
      * 订单价格
      */
     private BigDecimal total;
@@ -74,8 +69,6 @@ public class OrderDTO {
      */
     private LocalDateTime updateTime;
 
-    @TableField(exist = false)
-    private List<OrderItem> orderItemList;
 
     @TableField(exist = false)
     private List<OrderProductDTO> orderProductDTOS;

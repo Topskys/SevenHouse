@@ -29,7 +29,7 @@ import java.util.List;
  * @since 2022-09-20
  */
 @Api(value = "寄存接口", tags = "寄存相关的接口")
-@Controller
+@RestController
 @RequestMapping("/deposit")
 public class DepositController {
 
@@ -47,8 +47,7 @@ public class DepositController {
     public Result getDepositList(@RequestParam("pageNum") Long pageNum,
                                  @RequestParam("pageSize") Long pageSize) {
 
-        Page<Deposit> depositPage = depositService.page(new Page<Deposit>(pageNum, pageSize),
-                new QueryWrapper<Deposit>().ne("user_id", "-1"));
+        Page<Deposit> depositPage = depositService.page(new Page<Deposit>(pageNum, pageSize));
         List<Deposit> records = depositPage.getRecords();
         // 查询关联的酒信息
         records.stream().forEach(item -> {
