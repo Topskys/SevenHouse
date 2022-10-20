@@ -1,9 +1,9 @@
 <!--
  * @Author: Topskys
  * @Date: 2022-05-21 22:24:00
- * @LastEditTime: 2022-10-20 18:13:41
+ * @LastEditTime: 2022-10-20 19:51:08
 -->
-# seven-house-uni-app
+# seven-house-manage
 
 ## 运行
 ```
@@ -24,4 +24,3 @@ npm run dev
 ![Image text]("https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/order.png")
 ![Image text]("https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/customer.png")
 ![Image text]("https://github.com/Topskys/xxl/blob/main/front-end/seven-house-manage/src/assets/login.png")
-
