@@ -32,6 +32,11 @@ import Layout from '@/layout'
  */
 const CustomerList = () => import('@/views/customer/index')
 const OrderList = () => import('@/views/order/index')
+const CategoryList = () => import('@/views/category/list.vue')
+const ProductList = () => import('@/views/product/index.vue')
+const DeskList = () => import('@/views/desk/list.vue')
+const SaveList = () => import('@/views/save/index.vue')
+const RecordList = () => import('@/views/save/record.vue')
 
 
 export const constantRoutes = [{
@@ -66,12 +71,25 @@ export const constantRoutes = [{
     name: 'Product',
     meta: { title: '商品管理', icon: 'el-icon-goods' },
     children: [{
-        path: 'sku',
-        name: 'Sku',
-        component: () =>
-            import('@/views/product/Sku'),
+        path: 'list',
+        name: 'ProductList',
+        component: ProductList,
         meta: { title: '商品列表' }
-    }]
+    },
+    ]
+},
+{
+    path: '/category',
+    component: Layout,
+    name: 'Category',
+    meta: { title: '分类管理', icon: 'el-icon-menu' },
+    children: [
+        {
+            path: 'list',
+            name: 'categoryList',
+            component: CategoryList,
+            meta: { title: '分类列表' }
+        }]
 },
 {
     path: '/order',
@@ -85,17 +103,50 @@ export const constantRoutes = [{
         meta: { title: '订单列表' }
     }]
 },
-
+{
+    path: '/save',
+    component: Layout,
+    name: 'Save',
+    meta: { title: '寄存管理', icon: 'el-icon-coin' },
+    children: [
+        {
+            path: 'list',
+            name: 'saveList',
+            component: SaveList,
+            meta: { title: '存酒列表' }
+        },
+        {
+            path: 'record',
+            name: 'recordList',
+            component: RecordList,
+            meta: { title: '取酒记录' }
+        }
+    ]
+},
 {
     path: '/customer',
     component: Layout,
     name: 'Customer',
     meta: { title: '顾客管理', icon: 'el-icon-user' },
+    children: [
+        {
+            path: 'list',
+            name: 'customerList',
+            component: CustomerList,
+            meta: { title: '顾客列表' }
+        },
+    ]
+},
+{
+    path: '/desk',
+    component: Layout,
+    name: 'Desk',
+    meta: { title: '座位管理', icon: 'el-icon-dish' },
     children: [{
         path: 'list',
-        name: 'customerList',
-        component: CustomerList,
-        meta: { title: '顾客列表' }
+        name: 'deskList',
+        component: DeskList,
+        meta: { title: '座号列表' }
     }]
 },
 

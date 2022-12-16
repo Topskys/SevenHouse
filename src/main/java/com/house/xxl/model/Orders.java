@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,13 +35,12 @@ public class Orders extends Model<Orders> {
     /**
      * 用户id
      */
-    private Integer userId;
-
+    private String userId;
 
     /**
      * 订单价格
      */
-    private BigDecimal total;
+    private Long total;
 
     /**
      * 桌号
@@ -62,15 +61,19 @@ public class Orders extends Model<Orders> {
      * 订单状态
      */
     private String status;
-
     /**
      * 订单备注
      */
     private String remark;
 
+
+    private String eatType;
+
+    private Integer count;
     /**
      * 创建时间
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private LocalDateTime createTime;
 
     /**
@@ -81,6 +84,8 @@ public class Orders extends Model<Orders> {
     @TableField(exist = false)
     private List<OrderItem> orderItemList;
 
+    @TableField(exist = false)
+    private String nickName;
 
     @Override
     protected Serializable pkVal() {

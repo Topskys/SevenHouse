@@ -1,32 +1,30 @@
 /*
  * @Author: Topskys
  * @Date: 2022-10-19 20:50:54
- * @LastEditTime: 2022-10-20 17:39:14
+ * @LastEditTime: 2022-11-08 16:06:05
  * 顾客管理模块
  */
 import request from '@/utils/request'
 
-//获取顾客列表的接口
-export const reqCustomerList = (pageNum, pageSize) => request({ url: `/user/getUserList/${pageNum}/${pageSize}` })
+// 获取顾客列表或查询的接口
+export const reqCustomerList = (pageNum = 1, pageSize = 10, phone = '', userName = '') => request({ url: `/api/user/getUserList?pageSize=${pageSize}&pageNum=${pageNum}&phone=${phone}&userName=${userName}` })
 
 
-//添加新或修改订单接口
-export const reqAddOrUpdateOrder = (order) => {
-    if (order.id) {
-        return request({
-            url: `/admin/order/update/`,
-            method: 'PUT',
-            data: order,
-        })
-    } else {
-        return request({ url: `/admin/order/save/`, method: 'post', data: order })
-    }
-}
+// 修改顾客接口
+export const reqCustomerUpdate = (data) => request({ url: '/api/user/updateUser', method: 'post', data })
+
+
+// 删除接口
+export const reqDeleteCustomer = (id) => request({ url: `/api/user/deleteUser?userId=${id}` })
 
 
 
-// 删除订单接口
-export const reqDeleteOrder = (id) => request({
-    url: `/admin/order/remove/${id}`,
-    method: 'delete'
-})
+
+//添加新或修改顾客接口
+// export const reqAddOrUpdateOrder = (customer) => {
+//     customer.id ? request({
+//         url: `/admin/customer/update/`,
+//         method: 'PUT',
+//         data: customer,
+//     }) : request({ url: `/admin/customer/save/`, method: 'post', data: customer })
+// }

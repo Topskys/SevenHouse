@@ -1,6 +1,7 @@
 package com.house.xxl.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -32,6 +33,9 @@ public class Store extends Model<Store> {
     private String phone;
 
     private String status;
+
+    @TableField(exist = false)
+    private Boolean isOpen;
 
 
     @Override

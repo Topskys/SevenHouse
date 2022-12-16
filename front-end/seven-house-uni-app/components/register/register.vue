@@ -1,13 +1,9 @@
 <template>
-	<view class="register__container" style="min-height: 100vh;padding:0 30rpx">
+	<view class="register__container">
 		<uni-forms :modelValue="form" ref="form" :rules="rules" validate-trigger="bind">
 
 			<uni-forms-item name="email" class="uni-form-item" label="邮箱:" required>
-
 				<input class="uni-input" v-model="form.email" placeholder="请输入邮箱" />
-			</uni-forms-item>
-			<uni-forms-item name="phone" class="uni-form-item" label="手机号:" required>
-				<input class="uni-input" v-model="form.phone" type="number" placeholder="请输入手机号" maxlength=11 />
 			</uni-forms-item>
 			<uni-forms-item name="password" class="uni-form-item" label="密码:" required>
 				<input class="uni-input" password type="text" v-model="form.password" placeholder="请输入密码" />
@@ -31,8 +27,6 @@
 		data() {
 			return {
 				form: {
-					phone: '',
-					// nickname: "",
 					password: "",
 					email: '',
 				},
@@ -72,17 +66,6 @@
 							}
 						]
 					},
-					phone: {
-						rules: [{
-								required: true,
-								errorMessage: '请输入手机号',
-							},
-							{
-								format: 'phone',
-								errorMessage: '请输入正确的手机号',
-							}
-						]
-					},
 				}
 			}
 		},
@@ -95,12 +78,13 @@
 			submit(form) {
 				this.$refs.form.validate().then(res => {
 					// JSON.stringify(res)
-					this.$api.user.reqRegister(res).then(({
+					this.$api.user.reqRegister(JSON.stringify(res)).then(({
 						code,
-						data
+						data,
+						msg
 					}) => {
 						uni.showToast({
-							title: data.msg,
+							title: msg,
 							icon: code === 200 ? 'success' : 'error'
 						});
 						// 注册成功，需要手动切换至登录页

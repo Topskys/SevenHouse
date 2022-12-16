@@ -1,7 +1,10 @@
 // 后台接口
-// const baseUrl = "http://localhost:8889"
+// const baseUrl = "http://10.22.170.174:8989"
+const baseUrl = "http://106.14.40.97:8989"
+// 本地接口
+// const baseUrl = "http://127.0.0.1:8989"
 // mock接口
-const baseUrl = ""
+// const baseUrl = ""
 
 const request = (options) => {
 	return new Promise((resolve, reject) => {
@@ -12,10 +15,12 @@ const request = (options) => {
 			method: options.method || "get", // 请求类型建议小写与mock的一致
 			url: baseUrl + options.url,
 			data: options.data || {}, // data: JSON.stringify(options.data || {}), 
-			headers: options.headers || { // 请求头需要加上，有的post请求，没有默认加上，mock里接收不到参数
+			header: {
+				// 请求头需要加上，有的post请求，没有默认加上，mock里接收不到参数
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'Token': `${uni.getStorageSync("token")}`
+				'token': `${uni.getStorageSync("token")}`,
+				'userId': `${uni.getStorageSync("userInfo")?JSON.parse(uni.getStorageSync("userInfo")||'{}').id:''}`,
 			},
 			dataType: 'json',
 		}).then((response) => {

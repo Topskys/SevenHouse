@@ -18,16 +18,17 @@ const port = process.env.port || process.env.npm_config_port || 9528 // dev port
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
     /**
-     * You will need to set publicPath if you plan to deploy your site under a sub path,
-     * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
-     * then publicPath should be set to "/bar/".
-     * In most cases please use '/' !!!
-     * Detail: https://cli.vuejs.org/config/#publicpath
-     */
+       * You will need to set publicPath if you plan to deploy your site under a sub path,
+       * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
+       * then publicPath should be set to "/bar/".
+       * In most cases please use '/' !!!
+       * Detail: https://cli.vuejs.org/config/#publicpath
+       */
     publicPath: '/',
     outputDir: 'dist',
     assetsDir: 'static',
-    lintOnSave: process.env.NODE_ENV === 'development',
+    // lintOnSave: process.env.NODE_ENV === 'development',
+    lintOnSave: false,   //加入此行 , false为关闭true为开启
     productionSourceMap: false,
     devServer: {
         port: port,
@@ -38,14 +39,16 @@ module.exports = {
         },
         //配置跨域代理
         proxy: {
-            "/dev-api": {
-                target: "http://gmall-h5-api.atguigu.cn", // http://10.22.170.174:8989/
-                pathRewrite: { "^/dev-api": "" }
+            "/api": {
+                // target: "http://106.14.40.97:8989", 
+                target: "http://127.0.0.1:8989",
+                pathRewrite: { "^/api": "/api" }
             }
         },
         // 开启mock服务
         before: require("./mock/mock-server.js")
     },
+
     configureWebpack: {
         // provide the app's title in webpack's name field, so that
         // it can be accessed in index.html to inject the correct title.
@@ -121,9 +124,10 @@ module.exports = {
                                 }
                             }
                         })
-                        // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
+                    // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
                     config.optimization.runtimeChunk('single')
                 }
             )
-    }
+    },
+
 }

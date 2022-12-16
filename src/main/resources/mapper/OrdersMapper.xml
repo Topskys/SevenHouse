@@ -4,21 +4,55 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.house.xxl.model.Orders">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="total" property="total" />
-        <result column="desk_id" property="deskId" />
-        <result column="phone" property="phone" />
-        <result column="pay_type" property="payType" />
-        <result column="status" property="status" />
-        <result column="remark" property="remark" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="total" property="total"/>
+        <result column="desk_id" property="deskId"/>
+        <result column="phone" property="phone"/>
+        <result column="pay_type" property="payType"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="count" property="count"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, total, desk_id, phone, pay_type, status, remark, create_time, update_time
+        id
+        , user_id, total, desk_id, phone, pay_type, status, count,remark, create_time, update_time
     </sql>
 
+    <select id="getOrderTotal" resultType="java.lang.Integer">
+        SELECT sum(total) as total
+        from orders
+    </select>
+
+    <select id="getTodayTotal" resultType="java.lang.Integer">
+        SELECT sum(total) as toatl
+        from orders
+        WHERE date (create_time) = date (now())
+    </select>
+
+    <select id="getOrderCount" resultType="java.lang.Integer">
+        SELECT count(*) as toatl
+        from orders
+    </select>
+
+    <select id="getMonthTotal" resultType="java.lang.Integer">
+        select sum(total) as sum
+        from orders
+        WHERE YEAR (create_time)=#{year}
+          and DATE_FORMAT(create_time
+            , '%Y-%m') =#{date}
+
+    </select>
+
+    <select id="getHot" resultType="java.util.Map">
+        SELECT alco_name, count(alco_name) as total
+        FROM order_item
+        GROUP BY alco_name
+        ORDER BY total desc limit 10
+
+    </select>
 </mapper>

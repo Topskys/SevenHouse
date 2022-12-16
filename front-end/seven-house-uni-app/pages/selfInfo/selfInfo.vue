@@ -9,26 +9,25 @@
 							style="width: 100%;height: 100%;border-radius: 50%;">
 					</view>
 				</view>
-				<text v-if="userInfo.avaterUrl">修改头像</text>
+				<!-- <text v-if="userInfo.avaterUrl">修改头像</text> -->
 			</view>
 			<!-- 昵称 -->
 			<view class="ui-list">
 				<text>昵称</text>
-				<input type="text" :placeholder="value" :value="userInfo.nickName" @input="bindnickName"
+				<input type="text" :placeholder="value" :value="userInfo.nickname" @input="bindnickName"
 					placeholder-class="place" />
 			</view>
 			<!-- 手机号 -->
 			<view class="ui-list">
 				<text>手机号</text>
-				<input type="number" :placeholder="value" :value="userInfo.phone" @input="bindnickMobile"
-					placeholder-class="place" />
+				<input :placeholder="value" :value="userInfo.phone" @input="bindnickMobile" placeholder-class="place" />
 			</view>
 			<!-- 性别 -->
 			<view class="ui-list right">
 				<text>性别</text>
 				<picker @change="bindPickerChange" mode='selector' range-key="name" :value="index" :range="genders">
 					<view class="picker">
-						{{genders[index].name}}
+						{{genders[userInfo.gender].name}}
 					</view>
 				</picker>
 			</view>
@@ -48,12 +47,15 @@
 				</picker>
 			</view>
 			<!-- 签名 -->
-			<view class="ui-list">
+			<!-- <view class="ui-list">
 				<text>签名</text>
 				<textarea :placeholder="value" placeholder-class="place" :value="userInfo.sign"
 					@input="binddescription"></textarea>
-			</view>
-			<button class="save" @tap="savaInfo">保 存 修 改</button>
+			</view> -->
+			<button class="save" @tap="savaInfo" style="margin-top: 100px;">保 存 修 改</button>
+			<button class="save" @click="reLogin"
+				style="margin-top: 20px;color: #000;background:#eee;border-radius: 1px solid  #eee;">退
+				出 登 录</button>
 		</view>
 
 	</view>
@@ -92,13 +94,13 @@
 		},
 		onLoad() {
 			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
-			setTimeout(this.$checkLogin("/pages/selfInfo/selfInfo", "1"), 5000)
+			this.$checkLogin("/pages/selfInfo/selfInfo", "1");
 		},
 		computed: {
 			...mapState({
-				userInfo: (state) => {
+				userInfo: function(state) {
 					let userInfo = state.m_user.userInfo
-					if (userInfo.avatarUrl) {
+					if (userInfo.id) {
 						return userInfo
 					} else {
 						this.reLogin()
@@ -108,7 +110,7 @@
 			})
 		},
 		methods: {
-			...mapMutations('m_user', ['updateUserInfo', 'deleteUserInfo']),
+			...mapMutations('m_user', ['updateUserInfo', 'deleteUserInfo', 'deleteToken']),
 			bindPickerChange(e) {
 				this.index = e.detail.value;
 				this.userInfo.gender = this.index
@@ -120,17 +122,16 @@
 				this.userInfo.birthday = e.detail.value;
 			},
 			bindnickName(e) {
-				this.userInfo.nickName = e.detail.value;
+				this.userInfo.nickname = e.detail.value;
 
 			},
 			bindnickMobile(e) {
 				this.userInfo.phone = e.detail.value;
-
 			},
-			binddescription(e) {
-				this.userInfo.sign = e.detail.value;
+			// binddescription(e) {
+			// 	this.userInfo.sign = e.detail.value;
 
-			},
+			// },
 			avatarChoose() {
 				let that = this;
 				uni.chooseImage({
@@ -146,14 +147,14 @@
 			},
 			savaInfo() {
 				let that = this;
-				let nickname = that.userInfo.nickName;
+				let nickname = that.userInfo.nickname;
 				// let avatarUrl = that.userInfo.avatarUrl;
-				let avatarUrl = that.avatar;
+				// let avatarUrl = that.avatar;
 				let gender = that.index;
 				let phone = that.userInfo.phone;
 				let address = that.userInfo.address;
 				let birthday = that.userInfo.birthday;
-				let sign = that.userInfo.sign;
+				// let sign = that.userInfo.sign;
 
 				let updata = {};
 				if (!nickname) {
@@ -165,7 +166,7 @@
 					return;
 				}
 				updata.nickname = nickname;
-				updata.avatarUrl = avatarUrl;
+				// updata.avatarUrl = avatarUrl;
 				updata.gender = gender;
 				if (that.isPoneAvailable(phone)) {
 					updata.phone = phone;
@@ -196,7 +197,9 @@
 					return;
 				}
 				updata.birthday = birthday;
-				updata.sign = sign;
+				updata.id = that.userInfo.id;
+				updata.type = that.userInfo.type;
+				// updata.sign = sign;
 				that.updateInfo(updata);
 			},
 			isPoneAvailable(poneInput) {
@@ -211,22 +214,25 @@
 				//传后台
 				this.$api.user.reqUpdateInfo(updata).then(({
 					code,
-					data
+					data,
+					msg
 				}) => {
 					if (code === 200) {
-						this.$api.user.reqUserInfo().then(({
+						this.$api.user.reqUserInfo(this.userInfo.id).then(({
 							code,
-							data
-						}) => { // 更新用户信息
-							(code === 200) && this.updateUserInfo(data.userInfo)
+							data,
+							msg
+						}) => {
+							// 更新用户信息
+							code === 200 && this.updateUserInfo(data)
 							uni.showToast({
-								title: data.msg,
+								title: msg,
 								icon: code === 200 ? 'success' : 'error'
 							})
 						})
 					} else {
 						uni.showToast({
-							title: data.msg,
+							title: msg,
 							icon: 'error'
 						})
 					}
@@ -249,10 +255,7 @@
 						var data = JSON.parse(res.data);
 						data = data.data;
 						that.avater = that.url + data.img;
-
 						that.headimg = that.url + data.img;
-
-
 					},
 					fail: function(error) {
 						console.log(error);
@@ -261,6 +264,7 @@
 			},
 			reLogin() {
 				this.deleteUserInfo("userInfo")
+				this.deleteToken("token")
 				uni.navigateTo({
 					url: "/pages/login/login",
 				})
@@ -373,6 +377,8 @@
 				top: 30rpx;
 				left: 150rpx;
 			}
+
+
 
 			textarea {
 				color: #030303;

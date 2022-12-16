@@ -50,9 +50,10 @@
 	"quickapp": {},
 	/* 小程序特有相关 */
 	"mp-weixin": {
-		"appid": "",
+		"appid": "wx4cd6554510fc29c4",
 		"setting": {
-			"urlCheck": false
+			"urlCheck": false,
+			"es6": true
 		},
 		"usingComponents": true
 	},
@@ -69,29 +70,29 @@
 		"enable": false
 	},
 	"vueVersion": "2"
-	// 配置跨域
-	// "h5": {
-	// 	"devServer": {
-	// 		// "port" : 8080, //浏览器运行端口
-	// 		"https": false,
-	// 		"proxy": {
-	// 			"/baseUrlTest": {
-	// 				"target": "http://192.168.1.34:8084",
-	// 				"changeOrigin": true,
-	// 				"secure": false,
-	// 				"pathRewrite": {
-	// 					"^/baseUrlTest": ""
-	// 				}
-	// 			},
-	// 			"/baseUrlBuild": {
-	// 				"target": "http://zhbz-test.xxx.com",
-	// 				"changeOrigin": true,
-	// 				"secure": false,
-	// 				"pathRewrite": {
-	// 					"^/baseUrlBuild": "" //路径重写，将接口路径中以/api开头的部分替换掉
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 }
+// 配置跨域
+// "h5": {
+// 	"devServer": {
+// 		// "port" : 8080, //浏览器运行端口
+// 		"https": false,
+// 		"proxy": {
+// 			"/baseUrlTest": {
+// 				"target": "http://192.168.1.34:8084",
+// 				"changeOrigin": true,
+// 				"secure": false,
+// 				"pathRewrite": {
+// 					"^/baseUrlTest": ""
+// 				}
+// 			},
+// 			"/baseUrlBuild": {
+// 				"target": "http://zhbz-test.xxx.com",
+// 				"changeOrigin": true,
+// 				"secure": false,
+// 				"pathRewrite": {
+// 					"^/baseUrlBuild": "" //路径重写，将接口路径中以/api开头的部分替换掉
+// 				}
+// 			}
+// 		}
+// 	}
+// }

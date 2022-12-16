@@ -6,8 +6,8 @@
     <resultMap id="BaseResultMap" type="com.house.xxl.model.Alcohols">
         <id column="alco_id" property="alcoId" />
         <result column="alco_number" property="alcoNumber" />
-        <result column="alco_name" property="alcoName" />
-        <result column="alco_img" property="alcoImg" />
+        <result column="name" property="name" />
+        <result column="imgUrl" property="imgUrl" />
         <result column="alco_origin" property="alcoOrigin" />
         <result column="alco_supplier" property="alcoSupplier" />
         <result column="alco_type" property="alcoType" />
@@ -17,13 +17,13 @@
         <result column="alco_originprice" property="alcoOriginprice" />
         <result column="alco_status" property="alcoStatus" />
         <result column="alco_remarks" property="alcoRemarks" />
-        <result column="create_time" property="createTime" />
+        <result column="time" property="time" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        alco_id, alco_number, alco_name, alco_img, alco_origin, alco_supplier, alco_type, alco_dec, alco_profit, alco_cap, alco_originprice, alco_status, alco_remarks, create_time, update_time
+        alco_id, alco_number, name, imgUrl, alco_origin, alco_supplier, alco_type, alco_dec, alco_profit, alco_cap, alco_originprice, alco_status, alco_remarks, time, update_time
     </sql>
 
 </mapper>

@@ -1,6 +1,7 @@
 <template>
-	<view style="text-align: center;height: calc(100vh - 44px);line-height: calc(100vh - 44px);">
-		<img src="static/images/official-club.png" style="width: 50%;">
+	<view style="text-align: center;height: 100vh;line-height: 100vh;">
+		<!-- text-align: center;height: calc(100vh - 44px);line-height: calc(100vh - 44px);// h5 -->
+		<img src="/static/images/official-club.png" style="width: 50%;">
 	</view>
 </template>
 
@@ -13,7 +14,7 @@
 		},
 		onLoad() {
 			// 检查登录信息，参数：backPath, backType[1 : redirectTo 2 : switchTab]
-			setTimeout(this.$checkLogin("/pages/club/club", "1"), 5000)
+			this.$checkLogin("/pages/club/club", "1");
 		},
 	}
 </script>

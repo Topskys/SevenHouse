@@ -10,6 +10,10 @@ import store from '@/store/index.js'
 require('@/mock/index.js')
 
 
+// 获取初始化订单
+store.commit("m_order/getProductFromStorage");
+
+
 
 // 挂载，扩展vue原型
 Vue.prototype.$api = api

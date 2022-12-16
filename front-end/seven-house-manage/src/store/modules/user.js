@@ -31,10 +31,12 @@ const actions = {
     // user login 登录业务
     async login({ commit }, userInfo) {
         const { username, password } = userInfo
-        let res = await login({ username: username.trim(), password: password })
-        if (res.code === 20000) {
-            commit('SET_TOKEN', res.data.token)
-            setToken(res.data.token)
+        let {code,data,msg}= await login({ email: username.trim(), password: password })
+        if (code === 200) {
+            commit('SET_TOKEN', data.token)
+            commit('SET_NAME',data.nickname)
+            commit('SET_AVATAR', data.avatarUrl)
+            setToken(data.token)
             return "login OK"
         } else {
             return Promise.reject(new Error("login fail"))
@@ -55,38 +57,42 @@ const actions = {
     },
 
     // get user info
-    getInfo({ commit, state }) {
-        return new Promise((resolve, reject) => {
-            getInfo(state.token).then(response => {
-                const { data } = response
+    // getInfo({ commit, state }) {
+    //     return new Promise((resolve, reject) => {
+    //         getInfo(state.token).then(response => {
+    //             const { data } = response
 
-                if (!data) {
-                    return reject('Verification failed, please Login again.')
-                }
-
-                const { name, avatar } = data
-
-                commit('SET_NAME', name)
-                commit('SET_AVATAR', avatar)
-                resolve(data)
-            }).catch(error => {
-                reject(error)
-            })
-        })
-    },
+    //             if (!data) {
+    //                 return reject('Verification failed, please Login again.')
+    //             }
+    //             const { name, avatar } = data
+    //             commit('SET_NAME', name)
+    //             commit('SET_AVATAR', avatar)
+    //             resolve(data)
+    //         }).catch(error => {
+    //             reject(error)
+    //         })
+    //     })
+    // },
 
     // user logout
+    // logout({ commit, state }) {
+    //     return new Promise((resolve, reject) => {
+    //         logout(state.token).then(() => {
+    //             removeToken() // must remove  token  first
+    //             resetRouter()
+    //             commit('RESET_STATE')
+    //             resolve()
+    //         }).catch(error => {
+    //             reject(error)
+    //         })
+    //     })
+    // },
+
     logout({ commit, state }) {
-        return new Promise((resolve, reject) => {
-            logout(state.token).then(() => {
-                removeToken() // must remove  token  first
-                resetRouter()
-                commit('RESET_STATE')
-                resolve()
-            }).catch(error => {
-                reject(error)
-            })
-        })
+        removeToken() // must remove  token  first
+        resetRouter()
+        commit('RESET_STATE')
     },
 
     // remove token

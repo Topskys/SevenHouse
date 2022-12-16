@@ -1,22 +1,24 @@
 /*
  * @Author: Topskys
  * @Date: 2022-10-19 17:38:12
- * @LastEditTime: 2022-10-20 15:56:47
+ * @LastEditTime: 2022-11-24 16:52:31
  * 统一暴露
  */
-import * as trademark from './product/tradeMark'
-import * as attr from './product/attr'
-import * as spu from './product/spu'
-import * as sku from './product/sku'
+import * as home from './home'
 import * as order from './order'
 import * as customer from './customer'
+import * as category from './category'
+import * as desk from './desk'
+import * as product from './product'
+import * as save from './save.js'
 
 
 export default {
-    trademark,
-    attr,
-    spu,
-    sku,
+    home,
     order,
     customer,
+    category,
+    desk,
+    product,
+    save,
 }

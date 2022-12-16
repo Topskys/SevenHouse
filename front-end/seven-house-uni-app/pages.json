@@ -1,17 +1,10 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		// {
-		// 	"path": "pages/pay/pay",
-		// 	"style": {
-		// 		"navigationBarTitleText": "填写订单",
-		// 		"enablePullDownRefresh": false
-		// 	}
-
-		// },
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "SevenHouse"
+				"navigationBarTitleText": "SevenHouse",
+				"enablePullDownRefresh": true
 			}
 		}, {
 			"path": "pages/classify/classify",
@@ -24,7 +17,8 @@
 			"path": "pages/order/order",
 			"style": {
 				"navigationBarTitleText": "购物车",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
+
 			}
 
 		}, {
@@ -38,13 +32,6 @@
 			"path": "pages/club/club",
 			"style": {
 				"navigationBarTitleText": "官方部落",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "components/goods-nav/goods-nav",
-			"style": {
-				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 
@@ -73,13 +60,20 @@
 			"path": "pages/save-wine/save-wine",
 			"style": {
 				"navigationBarTitleText": "存酒列表",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 
 		}, {
 			"path": "pages/pay/pay",
 			"style": {
 				"navigationBarTitleText": "填写订单",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/order/order-detail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
 				"enablePullDownRefresh": false
 			}
 
@@ -92,8 +86,7 @@
 		"backgroundColor": "#F8F8F8"
 		// "maxWidth": 540 // uni-app的最大宽度，建议注释掉，该方案存在缺陷
 	},
-	//底部tapBar
-	"tabBar": {
+	"tabBar": { //底部tapBar
 		"color": "rgba(0, 0, 0, 0.9)",
 		"fontSize": "10px",
 		"selectedColor": "#335eea",

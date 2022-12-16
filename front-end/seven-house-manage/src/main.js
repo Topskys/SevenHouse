@@ -1,3 +1,8 @@
+/*
+ * @Author: Topskys
+ * @Date: 2022-10-19 17:38:12
+ * @LastEditTime: 2022-11-24 16:45:16
+ */
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
@@ -30,25 +35,17 @@ if (process.env.NODE_ENV === 'production') {
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
-    // 如果想要中文版 element-ui，按如下方式声明
-    // Vue.use(ElementUI)
+// 如果想要中文版 element-ui，按如下方式声明
+// Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
 // 导入先关文件
-
 import API from '@/api'
-import CategorySelect from '@/components/CategorySelect'
-import HintButton from '@/components/HintButton'
-
-
 //组件实例的原型的原型指向对象
 Vue.prototype.$API = API
 
 
-// 注册全局组件
-Vue.component(CategorySelect.name, CategorySelect)
-Vue.component(HintButton.name, HintButton)
 
 
 

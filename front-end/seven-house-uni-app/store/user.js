@@ -28,8 +28,9 @@ export default {
 		},
 
 		// 删除用户信息，重新登录
-		deleteUserInfo() {
-			uni.removeStorageSync('userInfo')
+		deleteUserInfo(state) {
+			uni.removeStorageSync('userInfo');
+			state.userInfo = '';
 		},
 
 
@@ -43,6 +44,11 @@ export default {
 		// 将 token 字符串持久化存储到本地
 		saveTokenToStorage(state) {
 			uni.setStorageSync('token', state.token)
+		},
+
+		// 删除用户信息，重新登录
+		deleteToken() {
+			uni.removeStorageSync('token')
 		},
 
 

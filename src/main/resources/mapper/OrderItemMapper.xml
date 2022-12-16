@@ -12,11 +12,14 @@
         <result column="buy_num" property="buyNum" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
+        <result column="alco_image" property="alcoImage" />
+        <result column="deposit" property="deposit" />
+        <result column="dep_num" property="depNum" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, aclo_price, alco_name,alco_sku, order_id, buy_num, create_time, update_time
+        id, aclo_price, alco_name,alco_sku, order_id, buy_num, create_time, update_time,alco_image,deposit,dep_num
     </sql>
 
 </mapper>

@@ -4,8 +4,13 @@
 
 > 下载HBuilder X导入项目 --> 打开pages/index/index.vue --> 头部菜单栏，点击运行 --> 选择运行到浏览器 
 
+
 ## 环境依赖
-运行之前需要安装 nodejs 环境
+运行之前需要安装 nodejs 环境和依赖包
+```
+# 安装依赖包
+npm i
+```
 
 
 ## 项目进度
@@ -29,7 +34,7 @@
 
 
 <!-- github -->
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/index.png)
+<!-- ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/index.png)
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/category.png)
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/order1.png)
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/order2.png)
@@ -39,7 +44,7 @@
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/selfInfo.png)
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/pay.png)
 ![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/discount.png)
-![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/saveWine.png)
+![Image text](https://github.com/Topskys/xxl/blob/main/front-end/seven-house-uni-app/static/saveWine.png) -->
 
 
 <!-- gitee -->

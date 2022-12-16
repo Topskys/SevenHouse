@@ -4,14 +4,12 @@ import request from '@/utils/request'
 
 // 请求分类列表
 export const reqCategoryList = () => request({
-	url: '/api/category/list'
+	url: '/api/category/getcateGoryList'
 })
 
 
 
 // 请求分类项对应商品
 export const reqProductList = (data) => request({
-	url: `/api/category/product`,
-	method: 'post',
-	data,
+	url: `/api/alcohols/getAllAlcAndSku/${data}`,
 })

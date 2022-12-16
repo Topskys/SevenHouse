@@ -29,22 +29,22 @@
       <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin">Login</el-button>
 
-      <div class="tips">
+      <!-- <div class="tips">
         <span style="margin-right: 20px">username: admin</span>
         <span> password: any</span>
-      </div>
+      </div> -->
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
+// import { validUsername } from "@/utils/validate";
 
 export default {
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (!value.trim()) {
         callback(new Error("Please enter the correct user name"));
       } else {
         callback();
@@ -59,8 +59,8 @@ export default {
     };
     return {
       loginForm: {
-        username: "admin",
-        password: "111111",
+        username: "1@qq.com",
+        password: "12345678",
       },
       loginRules: {
         username: [
@@ -97,8 +97,7 @@ export default {
     //登录
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
-        //if数据符合规则
-        if (valid) {
+        if (valid) {    //if数据符合规则
           this.loading = true;
           this.$store.dispatch("user/login", this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || "/" });

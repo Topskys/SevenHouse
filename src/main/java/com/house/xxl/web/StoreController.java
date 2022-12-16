@@ -42,17 +42,17 @@ public class StoreController {
         Store store = storeService.getById(1);
         if (store.getStatus().equals("0")) {
             store.setStatus("1");
+            store.setIsOpen(false);
         } else {
             store.setStatus("0");
+            store.setIsOpen(true);
         }
         boolean update = storeService.updateById(store);
         if (update) {
-            return Result.success();
+            return Result.success(store);
         }
         return Result.error();
     }
-
-
 
 
     @ApiOperation(value = "管理员获取销售数据---暂时预留")

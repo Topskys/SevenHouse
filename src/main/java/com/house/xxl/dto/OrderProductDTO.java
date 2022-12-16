@@ -7,7 +7,7 @@ public class OrderProductDTO {
 
     private Long alcoId;
 
-    private String skuName;
+    private String skuId;
 
-    private int buyNum;
+    private int num;
 }

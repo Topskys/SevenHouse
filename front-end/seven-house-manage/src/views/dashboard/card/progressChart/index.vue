@@ -1,7 +1,7 @@
 <!--
  * @Author: Topskys
  * @Date: 2022-10-06 18:07:24
- * @LastEditTime: 2022-10-06 18:45:34
+ * @LastEditTime: 2022-10-20 21:38:49
 -->
 <template>
     <div class="chart" ref="chart"></div>
@@ -27,11 +27,12 @@ export default {
             series: [
                 {
                     type: "bar",
-                    data: [78],
+                    data: [66],
                     color: "cyan",
                     // 柱状的宽度
                     barWidth: 10,
-                    color: "yellowgreen",
+                    // color: "#4165d7",
+                    color: "#845EC2",
                     // 设置背景颜色
                     showBackground: true,
                     backgroundStyle: {
@@ -52,7 +53,7 @@ export default {
                 right: 0,
                 bottom: 0,
             },
-tooltip: {},
+            tooltip: {},
         })
     }
 }

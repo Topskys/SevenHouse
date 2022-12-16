@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.house.xxl.model.OrderItem;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class OrderDTO {
 
@@ -32,7 +36,7 @@ public class OrderDTO {
     /**
      * 订单价格
      */
-    private BigDecimal total;
+    private Long total;
 
     /**
      * 桌号
@@ -59,6 +63,10 @@ public class OrderDTO {
      */
     private String remark;
 
+
+
+    private int count;
+
     /**
      * 创建时间
      */
@@ -69,10 +77,14 @@ public class OrderDTO {
      */
     private LocalDateTime updateTime;
 
+    @TableField(exist = false)
+    private String isIntegral;
 
     @TableField(exist = false)
-    private List<OrderProductDTO> orderProductDTOS;
+    private String sendType;
 
 
+    @TableField(exist = false)
+    private List<OrderProductDTO> shopCart;
 
 }

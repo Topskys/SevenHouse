@@ -15,5 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface Ordersservice extends IService<Orders> {
 
-    Result addUserOrder(OrderDTO orderDTO);
+    Result addUserOrder(OrderDTO orderDTO,String userId);
 }

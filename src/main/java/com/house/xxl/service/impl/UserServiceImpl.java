@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result checkLogin(String username, String password) {
         LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(User::getUsername,username);
+        wrapper.eq(User::getEmail,username);
         User user = userMapper.selectOne(wrapper);
         if (user==null){
             return new Result("用户不存在");
@@ -56,30 +57,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                         .compact();
                 user.setToken(token);
                 user.setToken(token);
-                return new Result(user);
+                return Result.success(user);
             }else {
                 return Result.error("账号密码错误");
             }
         }
-
     }
 
     @Override
     @Transactional
     public Result userRegister(User user) {
         LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(User::getUsername, user.getUsername());
+        wrapper.eq(User::getEmail, user.getEmail());
         User user1 = userMapper.selectOne(wrapper);
         if (user1==null){
             String md5Pwd = MD5Util.md5(user.getPassword());
             user.setPassword(md5Pwd);
             user.setIntegral(0l);
             user.setStatus("0");
+            user.setBirthday("0");
             user.setType("用户");
-            user.setSex("未知");
+            user.setGender("0");
             user.setNickname(new Random().nextInt(100000) +"");
             user.setPhone("未知");
-            user.setCreateTime(LocalDateTime.now());
+            user.setAddress("未知");
+            user.setCreateTime(LocalDate.now());
             user.setUpdateTime(LocalDateTime.now());
             int i = userMapper.insert(user);
             if (i>0){

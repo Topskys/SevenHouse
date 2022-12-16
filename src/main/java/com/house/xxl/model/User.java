@@ -2,16 +2,19 @@ package com.house.xxl.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author auther: xxl
@@ -32,7 +35,7 @@ public class User extends Model<User> {
     /**
      * 账号
      */
-    private String username;
+    private String email;
 
     /**
      * 密码
@@ -47,17 +50,19 @@ public class User extends Model<User> {
     /**
      * 性别
      */
-    private String sex;
+    private String gender;
 
     /**
      * 年龄
      */
-    private Long age;
+    private String birthday;
 
     /**
      * 手机号
      */
     private String phone;
+
+    private String address;
 
 
     @TableField(exist = false)
@@ -75,12 +80,17 @@ public class User extends Model<User> {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    private LocalDate createTime;
 
     /**
      * 修改时间
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
+
+
+    private String avatarUrl;
 
 
     @Override

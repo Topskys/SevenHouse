@@ -4,8 +4,9 @@
 			<view class=' pg10-0 ta-c' :class='tab===0?"active":""' @click='tab=0'>登 录</view>
 			<view class=' pg10-0 ta-c' :class='tab===0?"":"active"' @click='tab=1'>注 册</view>
 		</view> -->
-		<liuyuno-tabs :tabData="tabs" :defaultIndex="tab" @tabClick='tabClick' :config='config'
-			style="margin:20% 0 15% 0;" />
+		<view style="height: 10vh"></view>
+		<liuyuno-tabs :tabData="tabs" :defaultIndex="tab" @tabClick='tabClick' :config='config' />
+		<view style="height: 10vh"></view>
 		<!-- 登录 -->
 		<view v-show="tab===0">
 			<uni-forms :modelValue="form" ref="form" :rules="rules" validate-trigger="bind">
@@ -116,14 +117,17 @@
 			// 提交登录表单
 			submit(form) {
 				this.$refs.form.validate().then(res => {
-					// JSON.stringify(res)
-					!(this.userInfo && this.token) ? this.$api.user.reqLogin(JSON.stringify(res)).then(({
+					// JSON.stringify(res) !(this.userInfo && this.token) ?
+					let token = uni.getStorageSync("token");
+					let userInfo = uni.getStorageSync("userInfo");
+					!(token && userInfo) ? this.$api.user.reqLogin(res).then(({
 						code,
-						data
+						data,
+						msg,
 					}) => {
 						if (code === 200) {
 							// 保存用户信息，跳转页面
-							this.updateUserInfo(data.userInfo)
+							this.updateUserInfo(data)
 							// 判断当前路径是否携带跳转参数且返回上一级，否则跳转首页
 							this.updateToken(data.token)
 							// 跳转
@@ -134,7 +138,7 @@
 							})
 						} else {
 							uni.showToast({
-								title: data.msg,
+								title: msg,
 								icon: 'error'
 							});
 						}
@@ -152,7 +156,8 @@
 
 <style lang="scss" scoped>
 	.login__container {
-		height: calc(100vh - 44px);
+		// height: calc(100vh - 44px);
+		height: 100vh;
 		background: #fff;
 		padding: 0 30rpx;
 		overflow: hidden;
@@ -172,10 +177,6 @@
 			border-radius: 10rpx;
 			background-color: #fff;
 			border: 1px solid #dcdfe6;
-
-			// input::focus {
-			// 	border: 1px solid #335eea;
-			// }
 		}
 
 

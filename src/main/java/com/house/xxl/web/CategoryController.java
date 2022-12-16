@@ -54,7 +54,7 @@ public class CategoryController {
         return Result.success(list);
     }
 
-    @ApiOperation(value = "管理员增加或者删除酒的分类", notes = "管理员增加或者删除酒的分类")
+    @ApiOperation(value = "管理员增加或者修改酒的分类", notes = "管理员增加或者删除酒的分类")
     @PostMapping("addOrUpdate")
     public Result addOrUpdate(@RequestBody Category category) {
         boolean saveOrUpdate = categoryService.saveOrUpdate(category);

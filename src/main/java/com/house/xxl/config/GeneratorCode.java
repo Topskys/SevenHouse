@@ -59,7 +59,9 @@ public class GeneratorCode {
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
 //        strategy.setInclude(new String[]{"user","orders","order_item","desk","deposit","business","alcohols_sku","alcohols"}); // 表名
-        strategy.setInclude(new String[]{"alcohols_sku","alcohols"}); // 表名
+//        strategy.setInclude(new String[]{"alcohols_sku","alcohols"}); // 表名
+        //strategy.setInclude(new String[]{"store"}); // 表名
+        strategy.setInclude(new String[]{"deposit_record"}); // 表名
 //        strategy.setInclude(new String[]{"category"}); // 表名
 
         mpg.setStrategy(strategy);

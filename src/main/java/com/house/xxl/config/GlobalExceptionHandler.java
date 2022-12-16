@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAdvice(basePackages="com.parking.parking.controller")
+@ControllerAdvice(basePackages="com.house.xxl.web")
 public class GlobalExceptionHandler {
 
     private static final Log log = LogFactory.get();
@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     @ResponseBody//返回json串
     public Result<?> error(HttpServletRequest request, Exception e){
         log.error("异常信息：",e);
-        return Result.error("-1", "系统异常");
+        return Result.error(-1, "系统异常");
     }
 
     @ExceptionHandler(CustomException.class)

@@ -9,14 +9,17 @@ import com.house.xxl.common.Result;
 import com.house.xxl.config.CustomException;
 import com.house.xxl.model.User;
 import com.house.xxl.service.Userservice;
+import io.swagger.annotations.*;
+import org.apache.commons.lang3.StringUtils;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -38,25 +41,23 @@ public class UserController {
     @Resource
     private HttpServletRequest request;
 
-    public User getUser() {
-        String token = request.getHeader("token");
-        if (token == null) {
-            throw new CustomException("500", "未登录");
-        }
-        System.out.println("#############################" + token);
-        String userNo = JWT.decode(token).getAudience().get(0);
-        System.out.println(userNo);
-        return userservice.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, userNo));
-    }
+//    public User getUser() {
+//        Enumeration<String> headerNames = request.getHeaderNames();
+//        String token = request.getHeader("token");
+//        if (token == null) {
+//            throw new CustomException(500, "未登录");
+//        }
+//        System.out.println("#############################" + token);
+//        String userNo = JWT.decode(token).getAudience().get(0);
+//        System.out.println(userNo);
+//        return userservice.getOne(Wrappers.<User>lambdaQuery().eq(User::getId, userNo));
+//    }
 
     @ApiOperation("用户登录接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(dataType = "string", name = "username", value = "登录用户名", required = true),
-            @ApiImplicitParam(dataType = "string", name = "password", value = "登录密码", required = true)
-    })
-    @GetMapping("login")
-    public Result login(String username, String password) {
-        return userservice.checkLogin(username, password);
+    @ApiResponse(code = 200, message = "success")
+    @PostMapping("login")
+    public Result login(@RequestBody User user) {
+        return userservice.checkLogin(user.getEmail(), user.getPassword());
     }
 
     @ApiOperation("用户注册接口")
@@ -66,24 +67,27 @@ public class UserController {
     }
 
     @ApiOperation("用户信息接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(dataType = "int", name = "userId", value = "用户id", required = true)
-    })
-    @GetMapping("userInfo")
-    public Result userInfo(int userId) {
-        User user = userservice.getById(userId);
+    @GetMapping("userInfo/{id}")
+    public Result userInfo(@PathVariable int id) {
+        User user = userservice.getById(id);
         return Result.success(user);
     }
 
 
     @ApiOperation("管理员获取用户列表")
     @GetMapping("getUserList")
-    public Result getUserList(@RequestParam("pageNum") Long pageNum, @RequestParam("pageSize") Long pageSize) {
-        User user = getUser();
-        if (!user.getStatus().equals("管理员")) {
-            return Result.error("无权限");
-        }
-        Page<User> page = userservice.page(new Page<User>(pageNum, pageSize), new QueryWrapper<User>().eq("status", "用户"));
+    public Result getUserList(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                              @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                              @RequestParam(required = false) String userName,
+                              @RequestParam(required = false) String phone) {
+//        User user = getUser();
+//        if (!user.getStatus().equals("管理员")) {
+//            return Result.error("无权限");
+//        }
+        Page<User> page = userservice.page(new Page<User>(pageNum, pageSize),
+                new QueryWrapper<User>().eq("type", "用户")
+                        .like(StringUtils.isNotBlank(userName), "nickname", userName)
+                        .like(StringUtils.isNotBlank(userName), "phone", phone));
         return Result.success(page);
     }
 
@@ -91,10 +95,10 @@ public class UserController {
     @ApiOperation("管理员修改用户信息")
     @PostMapping("updateUser")
     public Result updateUser(@RequestBody User user) {
-        User users = getUser();
-        if (!users.getStatus().equals("管理员")) {
-            return Result.error("无权限");
-        }
+//        User users = getUser();
+//        if (!users.getType().equals("管理员")) {
+//            return Result.error("无权限");
+//        }
         boolean updateById = userservice.updateById(user);
         if (updateById) {
             return Result.success();
@@ -105,8 +109,7 @@ public class UserController {
     @ApiOperation("用户修改个人信息")
     @PostMapping("modifyUser")
     public Result modifyUser(@RequestBody User user) {
-        User users = getUser();
-        if (!users.getStatus().equals("用户")) {
+        if (!user.getType().equals("用户")) {
             return Result.error("无权限");
         }
         boolean updateById = userservice.updateById(user);
@@ -123,6 +126,35 @@ public class UserController {
     public Result likeUser(@RequestParam("name") String name) {
         List<User> list = userservice.list(new QueryWrapper<User>().like("username", name));
         return Result.success(list);
+    }
+
+    @ApiOperation("用户删除信息")
+    @GetMapping("deleteUser")
+    public Result deleteUser(@RequestParam("userId") String userId) {
+        boolean remove = userservice.removeById(userId);
+        if (remove) {
+            return Result.success();
+        }
+        return Result.error();
+    }
+
+    @ApiOperation("用户充值金额")
+    @PutMapping("recharge")
+    public Result recharge(@RequestBody User user,@RequestHeader("userId") Long userId,@RequestHeader("token") String token){
+        if (StringUtils.isEmpty(token)){
+            return Result.error("请先登录");
+        }
+        if (user.getIntegral()>=500){
+            user.setIntegral(user.getIntegral()+100);
+        }
+        User one = userservice.getOne(new QueryWrapper<User>().eq("id", userId));
+        one.setIntegral(user.getIntegral()+one.getIntegral());
+        boolean b = userservice.updateById(one);
+        if (b){
+            return Result.success("充值成功");
+        }else {
+            return Result.success("充值失败");
+        }
     }
 }
 

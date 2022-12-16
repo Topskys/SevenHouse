@@ -1,7 +1,7 @@
 /*
  * @Author: Topskys
  * @Date: 2022-10-19 17:38:12
- * @LastEditTime: 2022-10-19 17:57:49
+ * @LastEditTime: 2022-11-23 16:39:18
  */
 module.exports = {
 
@@ -17,5 +17,5 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: true
+  sidebarLogo: false
 }

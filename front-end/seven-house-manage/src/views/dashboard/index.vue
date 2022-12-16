@@ -1,13 +1,13 @@
 <!--
  * @Author: Topskys
  * @Date: 2022-05-21 22:24:00
- * @LastEditTime: 2022-10-07 11:50:59
+ * @LastEditTime: 2022-10-21 18:53:23
 -->
 <template>
   <div class="dashboard-container">
     <Card></Card>
     <Sale></Sale>
-    <Observe></Observe>
+    <!-- <Observe></Observe> -->
   </div>
 </template>
 

@@ -4,11 +4,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -19,15 +20,14 @@ import java.time.LocalDateTime;
  * @since 2022-09-20
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Deposit extends Model<Deposit> {
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -35,29 +35,28 @@ public class Deposit extends Model<Deposit> {
      */
     private Integer userId;
 
-    /**
-     * 酒的id
-     */
-    private Integer barId;
 
-    /**
-     * 按杯卖的酒剩余多少
-     */
-    private Integer alcoCap;
+    private Integer depNum;
+
+    private String alcoName;
+
+    private String alcoImage;
+
+    private String orderId;
+
 
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    private Date createTime;
 
     /**
      * 修改时间
      */
-    private LocalDateTime updateTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    private Date updateTime;
 
-
-    @TableField(exist = false)
-    private Alcohols alcohols;
 
     @TableField(exist = false)
     private String phone;
@@ -65,10 +64,5 @@ public class Deposit extends Model<Deposit> {
     @TableField(exist = false)
     private User user;
 
-    @Override
-
-    protected Serializable pkVal() {
-        return this.id;
-    }
 
 }

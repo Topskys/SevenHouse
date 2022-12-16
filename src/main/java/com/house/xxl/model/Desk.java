@@ -1,9 +1,12 @@
 package com.house.xxl.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,12 +27,16 @@ public class Desk extends Model<Desk> {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private Integer deskNo;
+    private String deskNo;
 
     /**
      * 0空闲，1有人，2损坏
      */
     private String deskStatus;
+
+
+    @TableField(exist = false)
+    private List<Desk> deskList;
 
 
     @Override

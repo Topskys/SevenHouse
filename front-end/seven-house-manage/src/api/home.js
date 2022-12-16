@@ -1,32 +1,28 @@
 /*
  * @Author: Topskys
  * @Date: 2022-10-19 20:50:54
- * @LastEditTime: 2022-10-20 17:51:48
+ * @LastEditTime: 2022-11-17 23:43:51
  * 首页销售报表模块
  */
 import request from '@/utils/request'
 
-//获取顾客列表的接口
-export const reqCustomerList = (pageNum, pageSize) => request({ url: `/user/getUserList/${pageNum}/${pageSize}` })
+//获取首页图表数据的接口
+export const reqMonthSale = () => request({ url: `/api/dataSource/getMonthTotal` })
+
+export const reqVisitor = () => request({ url: `/api/dataSource/brose` })
+
+export const reqHotSale = () => request({ url: `/api/dataSource/getHotAlc` })
+
+export const reqPayNum = () => request({ url: `/api/dataSource/getOrderCount` })
+
+export const reqSaleTotal = () => request({ url: `/api/dataSource/getOrderTotal` })
 
 
-//添加新或修改订单接口
-export const reqAddOrUpdateOrder = (order) => {
-    if (order.id) {
-        return request({
-            url: `/admin/order/update/`,
-            method: 'PUT',
-            data: order,
-        })
-    } else {
-        return request({ url: `/admin/order/save/`, method: 'post', data: order })
-    }
-}
+export const reqSaleDay = () => request({ url: `/api/dataSource/getTotalTotal` })
+
+export const reqWeekDayRate = () => request({ url: `/api/dataSource/weekAndToday` })
 
 
 
-// 删除订单接口
-export const reqDeleteOrder = (id) => request({
-    url: `/admin/order/remove/${id}`,
-    method: 'delete'
-})
+
+

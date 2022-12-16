@@ -1,19 +1,19 @@
 package com.house.xxl.config;
 
 public class CustomException extends RuntimeException {
-    private String code;
+    private int code;
     private String msg;
 
-    public CustomException(String code, String msg) {
+    public CustomException(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

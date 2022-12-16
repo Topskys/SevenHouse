@@ -8,13 +8,14 @@
         <result column="user_id" property="userId" />
         <result column="bar_id" property="barId" />
         <result column="alco_cap" property="alcoCap" />
+        <result column="status" property="status" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, bar_id, alco_cap, create_time, update_time
+        id, user_id, bar_id, alco_cap,status, create_time, update_time
     </sql>
 
 </mapper>

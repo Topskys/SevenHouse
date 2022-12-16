@@ -1,8 +1,8 @@
 <template>
 	<view class="uni-badge--x">
 		<slot />
-		<text v-if="text" :class="classNames" :style="[positionStyle, customStyle, dotStyle]"
-			class="uni-badge" @click="onClick()">{{displayValue}}</text>
+		<text v-if="text" :class="classNames" :style="[positionStyle, customStyle, dotStyle]" class="uni-badge"
+			@click="onClick()">{{displayValue}}</text>
 	</view>
 </template>
 
@@ -157,7 +157,7 @@
 	};
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 	$uni-primary: #2979ff !default;
 	$uni-success: #4cd964 !default;
 	$uni-warning: #f0ad4e !default;
@@ -209,7 +209,7 @@
 		font-feature-settings: "tnum";
 		font-size: $bage-size;
 		/* #ifdef H5 */
-		z-index: 999;
+		// z-index: 999;
 		cursor: pointer;
 		/* #endif */
 

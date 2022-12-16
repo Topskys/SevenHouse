@@ -1,7 +1,7 @@
 <!--
  * @Author: Topskys
  * @Date: 2022-10-06 19:44:24
- * @LastEditTime: 2022-10-07 12:13:36
+ * @LastEditTime: 2022-11-17 23:41:43
 -->
 <template>
     <div>
@@ -9,7 +9,7 @@
             <div slot="header" class="clearfix">
                 <el-tabs class="tabs" v-model="activeName">
                     <el-tab-pane label="销售额" name="sale"></el-tab-pane>
-                    <el-tab-pane label="访问量" name="access"></el-tab-pane>
+                    <el-tab-pane label="支付笔数" name="access"></el-tab-pane>
                 </el-tabs>
                 <div class="right">
                     <span @click="setDay">今日</span>
@@ -27,12 +27,10 @@
                     <div class="charts" ref="charts"></div>
                 </el-col>
                 <el-col :span="6" class="middle-right">
-                    <h3>门店销售额排行</h3>
+                    <h3>热销榜</h3>
                     <ul>
-                        <li>
-                            <span class="l-index">1</span>
-                            <span class="l-name">uat</span>
-                            <span class="r-value">2677</span>
+                        <li v-for="item, index in hotSale" :key="index">
+                            <span>{{ index + 1 }}</span><span>{{ item.alco_name }} </span>
                         </li>
                     </ul>
                 </el-col>
@@ -42,10 +40,11 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
+import * as echarts from 'echarts';
 // 也可用moment
-import dayjs from 'dayjs'
-import { mapState } from 'vuex'
+import dayjs from 'dayjs';
+import { mapState } from 'vuex';
+import resize from '@/layout/mixin/ResizeHandler.js';
 export default {
     name: "Sale",
     data() {
@@ -53,11 +52,16 @@ export default {
             activeName: "sale",
             date: "",
             chart: null,
+            hotSale: [],
+            monthSale: {
+                time: [],
+                count: [],
+            },
         }
     },
     computed: {
         title() {
-            return this.activeName == "sale" ? '销售额' : '访问量'
+            return this.activeName == "sale" ? '销售额' : '支付笔数'
         },
         ...mapState({
             list: (state) => state.home.list
@@ -65,94 +69,30 @@ export default {
     },
     mounted() {
         // mounted(){}只执行一次，没有数据，所以监听list
-        this.chart = echarts.init(this.$refs.charts)
-        this.chart.setOption(
-            {
-                title: {
-                    text: this.title + '趋势',
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis: [
-                    {
-                        type: 'category',
-                        // data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-                        data: [],
-                        axisTick: {
-                            alignWithLabel: true
-                        }
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value'
-                    }
-                ],
-                series: [
-                    {
-                        name: 'Direct',
-                        type: 'bar',
-                        barWidth: '60%',
-                        // data: [10, 52, 200, 334, 390, 330, 220, 100, 190, 124, 33, 134]
-                        data: [],
-                    }
-                ]
-            }
-        )
+        this.getHotSale();
+        this.getMonthSale();
+        this.initEChart();
     },
     methods: {
-        setDay() {
-            const day = dayjs().format('YYYY-MM-DD')
-            this.date = [day, day]
+        getHotSale() {
+            this.$API.home.reqHotSale().then(({ code, data, msg }) => code === 200 && (this.hotSale = data || []));
         },
-        setWeek() {
-            const start = dayjs().day(1).format('YYYY-MM-DD')
-            const end = dayjs().day(7).format('YYYY-MM-DD')
-            this.date = [start, end]
+        getMonthSale() {
+            this.$API.home.reqMonthSale().then(({ code, data, msg }) => {
+                if (code === 200) {
+                    let month = [], count = [];
+                    data.forEach(x => {
+                        month.push(x.time)
+                        count.push(x.count)
+                    });
+                    this.monthSale.time = month;
+                    this.monthSale.count = count;
+                    console.log(month, count, this.monthSale)
+                }
+            });
         },
-        setMonth() {
-            const start = dayjs().startOf('month').format('YYYY-MM-DD')
-            const end = dayjs().endOf('month').format('YYYY-MM-DD')
-            this.date = [start, end]
-        },
-        setYear() {
-            const start = dayjs().startOf('year').format('YYYY-MM-DD')
-            const end = dayjs().endOf('year').format('YYYY-MM-DD')
-            this.date = [start, end]
-        }
-    },
-    watch: {
-        // 监听属性
-        title() {
-            // 重新修改图表的部分配置数据
-            this.chart.setOption({
-                title: {
-                    text: this.title + '趋势'
-                },
-                xAxis: { data: this.title === "销售额" ? this.list.orderFullYearAxis : this.list.userFullYearAxis },
-                series: [
-                    {
-                        name: 'Direct',
-                        type: 'bar',
-                        barWidth: '60%',
-                        data: this.title === "销售额" ? this.list.orderFullYear : this.list.userFullYear,
-                        color: this.title === "销售额" ? '' : "yellowgreen"
-                    }
-                ]
-            })
-        },
-        // 监听list，list: (state) => state.home.list
-        list() {
+        initEChart() {
+            this.chart = echarts.init(this.$refs.charts)
             this.chart.setOption(
                 {
                     title: {
@@ -174,7 +114,7 @@ export default {
                         {
                             type: 'category',
                             // data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-                            data: this.list.orderFullYearAxis,
+                            data: [],
                             axisTick: {
                                 alignWithLabel: true
                             }
@@ -191,7 +131,97 @@ export default {
                             type: 'bar',
                             barWidth: '60%',
                             // data: [10, 52, 200, 334, 390, 330, 220, 100, 190, 124, 33, 134]
-                            data: this.list.orderFullYear
+                            data: [],
+                        }
+                    ]
+                }
+            )
+            window.addEventListener("resize", () => {
+                this.chart.resize();
+            });
+        },
+        setDay() {
+            const day = dayjs().format('YYYY-MM-DD')
+            this.date = [day, day]
+        },
+        setWeek() {
+            const start = dayjs().day(1).format('YYYY-MM-DD')
+            const end = dayjs().day(7).format('YYYY-MM-DD')
+            this.date = [start, end]
+        },
+        setMonth() {
+            const start = dayjs().startOf('month').format('YYYY-MM-DD')
+            const end = dayjs().endOf('month').format('YYYY-MM-DD')
+            this.date = [start, end]
+        },
+        setYear() {
+            const start = dayjs().startOf('year').format('YYYY-MM-DD')
+            const end = dayjs().endOf('year').format('YYYY-MM-DD')
+            this.date = [start, end]
+        },
+
+    },
+    watch: {
+        // 监听属性
+        title() {
+            // 重新修改图表的部分配置数据
+            this.chart.setOption({
+                title: {
+                    text: this.title + '趋势'
+                },
+                xAxis: { data: this.title === "销售额" ? this.monthSale.time : this.list.userFullYearAxis },
+                series: [
+                    {
+                        name: 'Direct',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: this.title === "销售额" ? this.monthSale.count : this.list.userFullYear,
+                        color: this.title === "销售额" ? '' : "#845EC2"
+                    }
+                ]
+            })
+        },
+        // 监听list，list: (state) => state.home.list
+        'monthSale.count':function() {
+            this.chart.setOption(
+                {
+                    title: {
+                        text: this.title + '趋势',
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            // data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                            data: this.monthSale.time,
+                            axisTick: {
+                                alignWithLabel: true
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: 'Direct',
+                            type: 'bar',
+                            barWidth: '60%',
+                            // data: [10, 52, 200, 334, 390, 330, 220, 100, 190, 124, 33, 134]
+                            data: this.monthSale.count
                         }
                     ]
                 }
@@ -230,7 +260,8 @@ export default {
 
 .charts {
     width: 100%;
-    height: 300px;
+    // height: 300px;
+    height: calc(100vh - 450px);
 }
 
 .middle-right {
@@ -246,11 +277,18 @@ ul {
     list-style: none;
     padding: 0;
     width: 100%;
-    height: 300px;
+    // height: 300px;
+    // height: 48vh;
+    height: calc(100vh - 450px);
 
     li {
         height: 8%;
         margin: 10px 0;
+        padding: 0 10px;
+
+        span:nth-child(1) {
+            margin-right: 15px;
+        }
 
         .l-index {
             float: left;
@@ -267,5 +305,23 @@ ul {
             float: right;
         }
     }
+}
+
+.bg1,
+.bg2,
+.bg3 {
+    color: #fff;
+}
+
+.bg1 {
+    background-color: #F56C6C;
+}
+
+.bg2 {
+    background-color: #E6A23C;
+}
+
+.bg3 {
+    background-color: #67C23A;
 }
 </style>

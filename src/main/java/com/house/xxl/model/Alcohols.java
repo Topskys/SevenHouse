@@ -41,12 +41,12 @@ public class Alcohols extends Model<Alcohols> {
     /**
      * 酒的名字
      */
-    private String alcoName;
+    private String name;
 
     /**
      * 酒的图片
      */
-    private String alcoImg;
+    private String imgUrl;
 
     /**
      * 产地
@@ -62,6 +62,12 @@ public class Alcohols extends Model<Alcohols> {
      * 酒的类别
      */
     private String alcoType;
+
+    /**
+     * 酒的类别
+     */
+    @TableField(exist = false)
+    private String alcoTypeName;
 
     /**
      * 酒的宣言
@@ -97,7 +103,7 @@ public class Alcohols extends Model<Alcohols> {
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private LocalDateTime createTime;
+    private LocalDateTime time;
 
     /**
      * 修改时间
